@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "android:add": "cap add android && node scripts/configure-android.js",
-    "android:sync": "cap sync android && node scripts/configure-android.js",
+    "android:add": "cap add android",
+    "android:sync": "cap sync android",
     "android:open": "cap open android",
     "android:apk": "npm run android:sync && cd android && gradlew assembleDebug"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
-    "@capacitor/core": "^8.0.0",
-    "@capacitor/app": "^8.0.0",
-    "@capacitor/browser": "^8.0.0"
+    "@capacitor/core": "^8.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.0.0"
