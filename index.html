@@ -13,7 +13,7 @@
 .authgate{display:none;position:fixed;inset:0;z-index:20;place-items:center;padding:24px;background:var(--bg)}html.auth-pending .authgate{display:grid}html.auth-pending .wrap{visibility:hidden}.authgate-card{width:min(430px,100%);padding:30px;background:var(--paper);border:1px solid var(--line);border-radius:20px;text-align:center;box-shadow:var(--shadow)}.authgate-card .emoji{margin:0 auto 14px}.authgate-card h1{font-size:1.4rem;margin:0 0 8px}.authgate-card p{color:var(--muted);margin:0 0 18px}
 </style>
 </head>
-<body><div class="authgate" id="authGate" role="status"><div class="authgate-card"><div class="emoji">🎲</div><h1>Comprobando tu cuenta</h1><p id="authGateMessage">Un momento, estamos conectando con tu colección.</p><a class="btn" href="login.html" onclick="event.preventDefault();location.replace('login.html'+location.hash)">Ir al inicio de sesión</a></div></div>
+<body><div class="authgate" id="authGate" role="status"><div class="authgate-card"><div class="emoji">🎲</div><h1>Comprobando tu cuenta</h1><p id="authGateMessage">Un momento, estamos conectando con tu colección.</p><a class="btn" href="login.html?reauth=1">Ir al inicio de sesión</a></div></div>
 <div class="wrap">
 <header class="hero">
   <div class="eyebrow">Tu colección · Tu próxima quedada</div>
