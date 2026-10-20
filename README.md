@@ -6,7 +6,7 @@ La web está publicada en Vercel: https://mi-ludoteca-kappa.vercel.app/. El repo
 
 1. En el **SQL Editor** de tu proyecto, ejecuta el contenido de [`sql/schema.sql`](https://raw.githubusercontent.com/SergioArroni/Jogos/main/sql/schema.sql). Crea las tablas y sus políticas Row Level Security para que cada persona solo acceda a sus propios datos.
 2. En **Authentication → Sign In / Providers → Email**, deja habilitado el acceso por correo y permite crear usuarios. Mantén la confirmación del correo activada para verificar la dirección. Usa una contraseña de la ludoteca, distinta de la de Gmail.
-3. En **Authentication → URL Configuration**, usa `https://mi-ludoteca-kappa.vercel.app/` como **Site URL** y añádela también a **Redirect URLs**. Al crear la cuenta, Supabase enviará un correo de confirmación. El envío de prueba de Supabase tiene límites; si el mensaje no llega a tu dirección, configura un proveedor SMTP propio.
+3. En **Authentication → URL Configuration**, usa `https://mi-ludoteca-kappa.vercel.app` como **Site URL** y añade `https://mi-ludoteca-kappa.vercel.app/**` a **Redirect URLs**. Para que funcionen también las previsualizaciones de ramas, añade `https://*-deus20.vercel.app/**`. Al crear la cuenta, Supabase enviará un correo de confirmación. El envío de prueba de Supabase tiene límites; si el mensaje no llega a tu dirección, configura un proveedor SMTP propio.
 4. En **Connect** o **Settings → API Keys**, copia la **Project URL** y la **Publishable key** (`sb_publishable_...`). Copia `supabase-config.example.js` como `supabase-config.js` y pega los valores:
 
    ```js
