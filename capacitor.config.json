@@ -3,7 +3,7 @@
   "appName": "El Baul de los Jogos",
   "webDir": "www",
   "server": {
-    "url": "https://mi-ludoteca-kappa.vercel.app/",
+    "url": "https://el-baul-de-los-jogos.vercel.app/",
     "cleartext": false
   }
 }
