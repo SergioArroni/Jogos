@@ -4,15 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths:
-      - 'capacitor.config.json'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'index.html'
-      - 'login.html'
-      - 'scripts/**'
-      - 'www/**'
-      - '.github/workflows/build-android.yml'
 
 permissions:
   contents: read
