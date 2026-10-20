@@ -1,6 +1,6 @@
 {
   "appId": "es.sergioarroni.miludoteca",
-  "appName": "Mi Ludoteca",
+  "appName": "El Baul de los Jogos",
   "webDir": "www",
   "server": {
     "url": "https://mi-ludoteca-kappa.vercel.app/",

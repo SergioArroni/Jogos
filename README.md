@@ -1,4 +1,4 @@
-# Mi ludoteca
+# El Baul de los Jogos
 
 La web está publicada en Vercel: https://mi-ludoteca-kappa.vercel.app/. El repositorio de GitHub está conectado para publicar cada cambio automáticamente. Supabase guarda los juegos, lugares, amigos y grupos por usuario. El acceso es con correo electrónico y una contraseña propia de la aplicación; no requiere Google Cloud.
 
