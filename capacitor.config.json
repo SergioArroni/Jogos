@@ -1,0 +1,9 @@
+{
+  "appId": "es.sergioarroni.miludoteca",
+  "appName": "Mi Ludoteca",
+  "webDir": "www",
+  "server": {
+    "url": "https://sergioarroni.github.io/Jogos/",
+    "cleartext": false
+  }
+}
