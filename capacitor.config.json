@@ -3,7 +3,7 @@
   "appName": "Mi Ludoteca",
   "webDir": "www",
   "server": {
-    "url": "https://sergioarroni.github.io/Jogos/",
+    "url": "https://mi-ludoteca-kappa.vercel.app/",
     "cleartext": false
   }
 }
