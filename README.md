@@ -19,7 +19,7 @@ La web está publicada en GitHub Pages. Supabase guarda los juegos y grupos por 
    La publishable key puede publicarse en el navegador; Row Level Security protege los datos. Nunca incluyas una `secret` o `service_role` en la web.
 5. Publica `supabase-config.js` en la rama `main`. GitHub Pages se actualizará automáticamente. Al iniciar sesión por primera vez, la aplicación sube la colección local si todavía no hay datos en la cuenta.
 
-La clave antigua `anon` también es compatible. Hasta configurar Supabase, la aplicación continúa funcionando con almacenamiento local y copias JSON.
+La página [`login.html`](login.html) permite iniciar sesión o crear una cuenta con correo y contraseña. Cuando Supabase está conectado, la colección requiere iniciar sesión y se sincroniza por usuario. La clave antigua `anon` también es compatible. Hasta configurar Supabase, puedes seguir usando el modo local desde el enlace de la página de acceso o abriendo `index.html?local=1`.
 
 ## APK Android
 

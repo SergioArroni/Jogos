@@ -9,6 +9,7 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'index.html'
+      - 'login.html'
       - 'scripts/**'
       - 'www/**'
       - '.github/workflows/build-android.yml'
