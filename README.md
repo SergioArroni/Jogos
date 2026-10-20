@@ -8,8 +8,8 @@ La web se publica como sitio estático en GitHub Pages. Supabase añade inicio d
 2. En **Authentication → Providers**, habilita Google. En Google Cloud crea credenciales OAuth de tipo aplicación web y añade como URI de redirección autorizada la URL de callback que muestra Supabase: `https://TU-PROYECTO.supabase.co/auth/v1/callback`.
 3. Copia el Client ID y Client Secret de Google en la configuración del proveedor Google en Supabase.
 4. En Supabase **Authentication → URL Configuration**, añade `https://sergioarroni.github.io/Jogos/` a **Site URL** y a **Redirect URLs**. Añade también `es.sergioarroni.miludoteca://login-callback` a **Redirect URLs** para el APK.
-5. Copia `supabase-config.example.js` a `supabase-config.js` y pega la Project URL y la anon/public key desde **Project Settings → API**. Este archivo contiene la clave pública anon; nunca pongas la `service_role` en la web.
-6. Publica `index.html` y `supabase-config.js` en GitHub Pages. El primer inicio de sesión importa los datos locales al cloud si la cuenta aún no tiene colección.
+5. Copia `supabase-config.example.js` a `supabase-config.js` y pega la Project URL y la anon/public key desde **Project Settings → API**. Este archivo solo debe contener la clave pública anon. Nunca pongas la `service_role` en la web; la anon key está protegida por las políticas RLS.
+6. Guarda y publica `supabase-config.js` junto a `index.html` en la rama `main` de GitHub. La clave anon es pública, así que puede estar en Pages. El primer inicio de sesión importa los datos locales al cloud si la cuenta aún no tiene colección.
 
 Mientras no se configure Supabase, el catálogo sigue funcionando en localStorage y puedes usar las copias JSON.
 
