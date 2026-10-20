@@ -4,7 +4,7 @@ La web está publicada en Vercel: https://mi-ludoteca-kappa.vercel.app/. El repo
 
 ## Conectar Supabase
 
-1. En el **SQL Editor** de tu proyecto, ejecuta el contenido de [`sql/schema.sql`](https://raw.githubusercontent.com/SergioArroni/Jogos/main/sql/schema.sql). Crea las tablas y sus políticas Row Level Security para que cada persona solo acceda a sus propios datos.
+1. En el **SQL Editor** de tu proyecto, ejecuta el contenido de [`sql/schema.sql`](https://raw.githubusercontent.com/SergioArroni/el-baul-de-los-jogos/main/sql/schema.sql). Crea las tablas y sus políticas Row Level Security para que cada persona solo acceda a sus propios datos.
 2. Ejecuta también [`sql/unique-game-names.sql`](https://raw.githubusercontent.com/SergioArroni/Jogos/main/sql/unique-game-names.sql). Elimina duplicados de juegos con el mismo nombre dentro de cada colección, conserva el registro más antiguo y crea una restricción única por usuario y nombre (ignorando mayúsculas y espacios exteriores).
 3. Ejecuta también [`sql/user-features.sql`](sql/user-features.sql), que añade amigos reutilizables, perfiles con apodos únicos, grupos compartibles y la lista común de próximas compras. Después ejecuta [`sql/bootstrap-admin.sql`](sql/bootstrap-admin.sql) para dar rol de administrador a `sergioadgi38@gmail.com` (esa cuenta debe haberse registrado antes).
 4. En **Authentication → Sign In / Providers → Email**, deja habilitado el acceso por correo y permite crear usuarios. Mantén la confirmación del correo activada para verificar la dirección. Usa una contraseña de la ludoteca, distinta de la de Gmail.
@@ -28,4 +28,4 @@ La página [`login.html`](login.html) permite iniciar sesión o crear una cuenta
 
 La aplicación Android abre la misma web publicada y necesita Internet. Al iniciar sesión en Android usa el mismo correo y contraseña. No necesita Google Cloud.
 
-El último APK de depuración se descarga en GitHub desde **Actions → Build Android APK → Artifacts → mi-ludoteca-debug-apk**. También se genera uno nuevo automáticamente al actualizar la web o la configuración Android. Para publicarlo en Google Play hace falta crear una versión firmada de producción.
+El último APK de depuración se descarga en GitHub desde **Actions → Build Android APK → Artifacts → el-baul-de-los-jogos-debug-apk**. También se genera uno nuevo automáticamente al actualizar la web o la configuración Android. Para publicarlo en Google Play hace falta crear una versión firmada de producción.
