@@ -124,7 +124,7 @@ let games=[], groups=[];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2,10);
 const cloudConfig=window.LUDOTECA_SUPABASE||{};
-const supabase=window.supabase?.createClient&&cloudConfig.url&&cloudConfig.anonKey&&!cloudConfig.anonKey.includes("TU_")?window.supabase.createClient(cloudConfig.url,cloudConfig.anonKey):null;
+const publicKey=cloudConfig.publishableKey||cloudConfig.anonKey;const supabase=window.supabase?.createClient&&cloudConfig.url&&publicKey&&!publicKey.includes("TU_")?window.supabase.createClient(cloudConfig.url,publicKey):null;
 const mobileRedirect="es.sergioarroni.miludoteca://login-callback";
 let currentUser=null,saveQueue=Promise.resolve();
 function load(){try{games=JSON.parse(localStorage.getItem('ludoteca_games'))||initialGames.map((g,i)=>({id:'seed'+i,name:g[0],players:g[1],types:g[2].split(','),weight:g[3],duration:g[4],location:g[5],notes:g[6]}));groups=JSON.parse(localStorage.getItem('ludoteca_groups'))||[]}catch(e){games=initialGames.map((g,i)=>({id:'seed'+i,name:g[0],players:g[1],types:g[2].split(','),weight:g[3],duration:g[4],location:g[5],notes:g[6]}));groups=[]}}
