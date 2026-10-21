@@ -76,3 +76,12 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Decisión:** la app compilada (`dist/`) va dentro de la APK, con funciones nativas de Capacitor (pantalla de inicio, barra de estado, botón atrás, vibración, menú de compartir) y diseño bajo la barra de estado (edge-to-edge). El código del móvil vive en una sola capa: `src/platform/`.
 - **Alternativas:** Tauri 2 (núcleo en Rust, menos rodado en móvil), Svelte Native (pantallas nativas, poco mantenido), PWA, React Native o una app nativa aparte (otro código distinto).
 - **Consecuencias:** arranca rápido y sin conexión muestra la última copia. Cada cambio necesita una APK nueva, que GitHub genera y prueba en un emulador. Las funciones de `api/` aceptan peticiones de la app (CORS). Lo que se edita sin conexión no se sube después.
+
+## 10. Firma fija de la APK
+**Estado:** Aceptada
+
+- **Contexto:** cada compilación firmaba la APK con una clave de depuración distinta, y Android obligaba a desinstalar la app para actualizarla.
+- **Decisión:** APK de *release* firmada siempre con la misma clave. La clave está guardada como secreto cifrado en GitHub y con copia del dueño fuera del repositorio. El número de versión es el número de ejecución de GitHub.
+- **Alternativas:** seguir con APK de depuración; dejar que Google Play firme la app (Play App Signing).
+- **Consecuencias:** las actualizaciones se instalan encima y la app queda lista para publicarse en Google Play. **Si la clave se pierde, la app ya no se puede actualizar**: la copia de seguridad es obligatoria.
+

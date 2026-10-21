@@ -41,6 +41,6 @@ npm run test:integration   # app + Postgres en Docker con todas las migraciones
 
 Los logos originales están en `assets/logo-original/`. Si cambian, ejecuta `python scripts/brand-assets.py` para regenerar los iconos de la web (`public/brand/`) y de la APK (`assets/`); la APK aplica el icono al compilarse.
 
-La aplicación Android abre la misma web publicada y necesita Internet. Al iniciar sesión en Android usa el mismo correo y contraseña. No necesita Google Cloud.
+La app compilada va dentro de la APK (Capacitor, `webDir: dist`), así que abre sin conexión con la última copia guardada; para sincronizar necesita Internet. Se entra con el mismo correo o apodo y contraseña que en la web.
 
-El último APK de depuración se descarga en GitHub desde **Actions → Build Android APK → Artifacts → el-baul-de-los-jogos-debug-apk**. Se genera uno nuevo en cada push a `main`. Para publicarlo en Google Play hace falta crear una versión firmada de producción.
+Cada push a `dev` o `main` genera una APK firmada en GitHub: **Actions → Build Android APK → Artifacts → el-baul-de-los-jogos-<rama>-apk**. Todas se firman con la misma clave (secretos `ANDROID_KEYSTORE_*` del repositorio), así que cada versión se instala encima de la anterior. El dueño guarda una copia de la clave fuera del repositorio: sin ella no se puede volver a actualizar la app. El mismo flujo prueba la APK en un emulador y guarda capturas (`android-screenshots-<rama>`).

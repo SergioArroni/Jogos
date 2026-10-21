@@ -35,14 +35,32 @@ jobs:
         run: npm run android:icons
       - name: Sync Capacitor
         run: npm run android:sync
-      - name: Build debug APK
-        working-directory: android
-        run: ./gradlew assembleDebug
+      # Android only installs an update when its versionCode is higher, so use the run number.
+      - name: Set version number
+        run: |
+          sed -i -E "s/versionCode [0-9]+/versionCode ${{ github.run_number }}/; s/versionName \"[^\"]+\"/versionName \"1.0.${{ github.run_number }}\"/" android/app/build.gradle
+          grep -E 'versionCode|versionName' android/app/build.gradle
+      # Always the same key (stored as repository secrets), so every APK installs over the previous one.
+      - name: Build signed release APK
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          test -n "$KEYSTORE_BASE64" || { echo "::error::Faltan los secretos ANDROID_KEYSTORE_* del repositorio"; exit 1; }
+          echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+          npx cap build android --androidreleasetype APK --signing-type apksigner             --keystorepath "$RUNNER_TEMP/release.jks" --keystorepass "$KEYSTORE_PASSWORD"             --keystorealias "$KEY_ALIAS" --keystorealiaspass "$KEYSTORE_PASSWORD"
+          rm -f "$RUNNER_TEMP/release.jks"
+          cp "$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)" el-baul-de-los-jogos.apk
+      - name: Verify signature
+        run: |
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
+          "$APKSIGNER" verify --print-certs el-baul-de-los-jogos.apk | grep -E 'Signer #1 certificate (DN|SHA-256)'
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: el-baul-de-los-jogos-${{ github.ref_name }}-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: el-baul-de-los-jogos-${{ github.ref_name }}-apk
+          path: el-baul-de-los-jogos.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -55,7 +73,7 @@ jobs:
       - name: Download APK
         uses: actions/download-artifact@v7
         with:
-          name: el-baul-de-los-jogos-${{ github.ref_name }}-debug-apk
+          name: el-baul-de-los-jogos-${{ github.ref_name }}-apk
       - name: Enable hardware acceleration for the emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -69,7 +87,8 @@ jobs:
           target: google_apis
           disable-animations: true
           script: |
-            adb install -r app-debug.apk
+            adb install el-baul-de-los-jogos.apk
+            adb install -r el-baul-de-los-jogos.apk
             adb shell am start -W -n es.sergioarroni.miludoteca/.MainActivity
             sleep 20
             adb exec-out screencap -p > launch-online.png
