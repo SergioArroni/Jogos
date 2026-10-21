@@ -10,7 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tests/tsconfig.json && tsc -p mcp/tsconfig.json",
+    "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tests/tsconfig.json && tsc -p mcp/tsconfig.json && tsc -p api/tsconfig.json --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:integration": "npm run build && node tests/stack/run.mjs",
