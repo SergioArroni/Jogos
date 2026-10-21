@@ -59,7 +59,7 @@ jobs:
       - name: Verify signature
         run: |
           APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
-          "$APKSIGNER" verify --print-certs el-baul-de-los-jogos.apk | grep -E 'Signer #1 certificate (DN|SHA-256)'
+          "$APKSIGNER" verify --verbose --print-certs el-baul-de-los-jogos.apk | grep -E 'Verifies|Verified using v[0-9]+ scheme.*true|certificate (DN|SHA-256 digest)'
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
