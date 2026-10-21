@@ -129,6 +129,10 @@ returns boolean language sql stable security definer set search_path = public as
     )
   );
 $$;
+create or replace function public.is_play_player(pid uuid)
+returns boolean language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.play_players where play_id = pid and user_id = auth.uid());
+$$;
 create or replace function public.owns_play(pid uuid)
 returns boolean language sql stable security definer set search_path = public as $$
   select exists (select 1 from public.plays where id = pid and owner_id = auth.uid());
@@ -137,8 +141,13 @@ $$;
 alter table public.plays enable row level security;
 alter table public.play_players enable row level security;
 drop policy if exists "Plays visible to group and players" on public.plays;
+-- Checks the row's own columns so INSERT ... RETURNING sees the new play.
 create policy "Plays visible to group and players" on public.plays
-  for select to authenticated using (public.can_view_play(id));
+  for select to authenticated using (
+    owner_id = auth.uid()
+    or (group_key is not null and public.has_group_access(group_owner, group_key))
+    or public.is_play_player(id)
+  );
 drop policy if exists "Users log plays" on public.plays;
 create policy "Users log plays" on public.plays
   for insert to authenticated with check (
