@@ -10,7 +10,7 @@ test('login page works with every outside server blocked', async ({ page }) => {
   await page.goto('/login.html');
   await expect(page.getByRole('heading', { name: 'Qué bueno verte.' })).toBeVisible();
   await expect(page.getByText('El acceso no está disponible')).toBeHidden();
-  expect(await page.evaluate(() => typeof window.supabase?.createClient)).toBe('function');
+  expect(await page.evaluate(() => typeof (window as { supabase?: { createClient?: unknown } }).supabase?.createClient)).toBe('function');
   await page.evaluate(() => document.fonts.ready);
   expect(await page.evaluate(() => document.fonts.check('600 32px Fraunces'))).toBe(true);
   await page.getByRole('button', { name: 'Crear una' }).click();
@@ -21,6 +21,6 @@ test('admin page loads its scripts with every outside server blocked', async ({ 
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/admin.html');
-  expect(await page.evaluate(() => typeof window.supabase?.createClient)).toBe('function');
+  expect(await page.evaluate(() => typeof (window as { supabase?: { createClient?: unknown } }).supabase?.createClient)).toBe('function');
   expect(errors).toEqual([]);
 });
