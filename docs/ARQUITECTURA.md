@@ -14,7 +14,7 @@
                               administrar usuarios, entrar con apodo, buscar cuentas.
 ```
 
-Además, `mcp/` (Rust, rmcp) es el servidor MCP que se publica como la función `/api/mcp`:
+Además, `mcp/` (TypeScript) es el servidor MCP que se publica como la función `/api/mcp` y reutiliza `src/domain/`:
 Claude o ChatGPT lo llaman con el token del usuario y él consulta Supabase con ese token,
 así que las mismas reglas RLS deciden qué ve cada uno.
 
@@ -57,6 +57,7 @@ proyecto de Supabase para pruebas.
 | `npm run check` | Tipos de TypeScript y Svelte | nada |
 | `npx playwright test --project=local --project=local-mobile` | La app real en Chrome, en modo local (sin backend) | Chrome |
 | `npm run test:integration` | La app contra Postgres + PostgREST en Docker con **todas las migraciones de `sql/` y las reglas RLS**, con varios usuarios | Docker |
+| `npm run mcp` | Arranca el servidor MCP en local (`http://127.0.0.1:8791/mcp`) | — |
 
 GitHub Actions (`.github/workflows/tests.yml`) ejecuta todo en cada push a `dev` y `main`.
 

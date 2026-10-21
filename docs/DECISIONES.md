@@ -61,13 +61,13 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Alternativas:** probar a mano; solo tests unitarios.
 - **Consecuencias:** los cambios se publican con confianza. Los de integración necesitan Docker y tardan más.
 
-## 8. Asistente de IA mediante MCP
-**Estado:** Aceptada. Prototipo (fase 1) hecho en `dev`: servidor rmcp en `mcp/` con `list_games` y `who_am_i`; falta el login OAuth (fase 2)
+## 8. Asistente de IA mediante MCP (en TypeScript)
+**Estado:** Aceptada. Fase 1 hecha en `dev` (herramientas de solo lectura); falta el login OAuth (fase 2)
 
 - **Contexto:** se quiere hablar con la app desde Claude o ChatGPT sin pagar el uso de los modelos.
-- **Decisión:** un servidor MCP en Rust (rmcp) que cada usuario conecta en su propio Claude o ChatGPT. Entra con su cuenta de la app (OAuth de Supabase), así que RLS sigue protegiendo los datos.
-- **Alternativas:** chat dentro de la app con una clave de API pagada por el dueño; que cada usuario ponga su propia clave de API.
-- **Consecuencias:** coste de modelos cero para el dueño. Depende de que los planes de Claude y ChatGPT permitan conectores. Antes de construirlo hay que probar con un prototipo que rmcp funciona en Vercel.
+- **Decisión:** un servidor MCP que cada usuario conecta en su propio Claude o ChatGPT. Pregunta a Supabase con el token de esa persona, así que RLS sigue protegiendo los datos. Se escribe en **TypeScript** (`mcp/`, SDK oficial v2) para **reutilizar `src/domain/`**: el recomendador, el catálogo y las estadísticas son los mismos que usa la app.
+- **Alternativas:** chat dentro de la app pagado por el dueño; servidor en Rust con rmcp (se hizo un prototipo y funcionaba en Vercel, pero obligaba a copiar la lógica de `src/domain/` a Rust y mantener dos versiones); llevar esa lógica a funciones SQL.
+- **Consecuencias:** coste de modelos cero para el dueño y respuestas coherentes con la app. Se pierde la práctica de Rust en esta pieza. Depende de que los planes de Claude y ChatGPT permitan conectores.
 
 ## 9. Capacitor con la app empaquetada
 **Estado:** Aceptada, en `dev`. Sustituye a la 3.
