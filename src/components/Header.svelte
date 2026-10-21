@@ -33,7 +33,7 @@
 
 <header class="app-header">
   <a class="brand" href="index.html" aria-label="El Baul de los Jogos, inicio">
-    <span class="brand-mark" aria-hidden="true">🎲</span>
+    <span class="brand-mark" aria-hidden="true"><span class="logo-shape"></span></span>
     <span><span class="brand-name">El Baul de los Jogos</span><span class="brand-caption">Tu colección, en orden</span></span>
   </a>
   <div class="header-actions">

@@ -167,3 +167,6 @@ html.auth-pending .authgate{display:grid}html.auth-pending .wrap{visibility:hidd
 @media(max-width:900px){.catalog-tools .searchbox{grid-column:1/-1}}
 @media(max-width:640px){.shelf-row{grid-auto-columns:138px;gap:10px}.cover-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.cover{padding:10px;border-radius:14px}.cover-emoji{font-size:2.7rem}.cover-title{font-size:.96rem}.shelf-head h2{font-size:1.12rem}.detail-hero{height:170px;border-radius:22px 22px 0 0}.detail-body{padding:18px 17px 4px}.detail-body h2{font-size:1.45rem}.detail-dialog .formactions{margin:14px 0 0;padding:12px 17px calc(12px + env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){.cover:hover,.cover:hover .cover-emoji{transform:none}}
+/* Logo drawn from the chest's silhouette; it takes the text colour, so it adapts to light and dark themes. */
+.logo-shape{display:block;width:72%;height:72%;background:currentColor;-webkit-mask:url(/brand/baul-icono.png) center/contain no-repeat;mask:url(/brand/baul-icono.png) center/contain no-repeat}
+.authgate-card .emoji{color:var(--green)}

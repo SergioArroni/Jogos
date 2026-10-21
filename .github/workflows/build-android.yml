@@ -27,6 +27,8 @@ jobs:
         run: npm ci
       - name: Create Android project
         run: npm run android:add
+      - name: Generate app icon from assets/
+        run: npm run android:icons
       - name: Sync Capacitor
         run: npm run android:sync
       - name: Build debug APK

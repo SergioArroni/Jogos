@@ -13,7 +13,8 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:integration": "npm run build && node tests/stack/run.mjs"
+    "test:integration": "npm run build && node tests/stack/run.mjs",
+    "android:icons": "capacitor-assets generate --android"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
@@ -21,6 +22,7 @@
     "@supabase/supabase-js": "^2.118.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.0.0",
     "@playwright/test": "^1.64.1",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
