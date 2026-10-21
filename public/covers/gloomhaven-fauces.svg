@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#bc6c25"/><stop offset="1" stop-color="#370617"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.375" r="0.45"><stop offset="0" stop-color="#ffd166" stop-opacity="0.35"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M198.8 139.1L246.0 150.0L198.8 160.9z" fill="#e76f51"/><path d="M199.3 158.6L238.7 186.7L190.9 178.8z" fill="#9c4221"/><path d="M192.2 176.8L217.9 217.9L176.8 192.2z" fill="#e76f51"/><path d="M178.8 190.9L186.7 238.7L158.6 199.3z" fill="#9c4221"/><path d="M160.9 198.8L150.0 246.0L139.1 198.8z" fill="#e76f51"/><path d="M141.4 199.3L113.3 238.7L121.2 190.9z" fill="#9c4221"/><path d="M123.2 192.2L82.1 217.9L107.8 176.8z" fill="#e76f51"/><path d="M109.1 178.8L61.3 186.7L100.7 158.6z" fill="#9c4221"/><path d="M101.2 160.9L54.0 150.0L101.2 139.1z" fill="#e76f51"/><path d="M100.7 141.4L61.3 113.3L109.1 121.2z" fill="#9c4221"/><path d="M107.8 123.2L82.1 82.1L123.2 107.8z" fill="#e76f51"/><path d="M121.2 109.1L113.3 61.3L141.4 100.7z" fill="#9c4221"/><path d="M139.1 101.2L150.0 54.0L160.9 101.2z" fill="#e76f51"/><path d="M158.6 100.7L186.7 61.3L178.8 109.1z" fill="#9c4221"/><path d="M176.8 107.8L217.9 82.1L192.2 123.2z" fill="#e76f51"/><path d="M190.9 121.2L238.7 113.3L199.3 141.4z" fill="#9c4221"/>
+    <circle cx="150" cy="150" r="60" fill="#e9a03b"/><path d="M118 132l20 6M182 132l-20 6" stroke="#370617" stroke-width="6" stroke-linecap="round"/>
+    <path d="M136 162h28l-14 14z" fill="#370617"/><path d="M150 176v12M150 188q-14 10-24 0M150 188q14 10 24 0" stroke="#370617" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M128 196l6 12 6-10M160 198l6 10 6-12" fill="#fffdf7"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

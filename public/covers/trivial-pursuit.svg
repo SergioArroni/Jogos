@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#4895ef"/><stop offset="1" stop-color="#14213d"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.375" r="0.45"><stop offset="0" stop-color="#caf0f8" stop-opacity="0.35"/><stop offset="1" stop-color="#caf0f8" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <circle cx="150" cy="156" r="89" fill="#14213d"/><path d="M150 156L150.0 74.0A82 82 0 0 1 221.0 115.0z" fill="#3a86ff" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/><path d="M150 156L221.0 115.0A82 82 0 0 1 221.0 197.0z" fill="#ff70a6" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/><path d="M150 156L150.0 238.0A82 82 0 0 1 79.0 197.0z" fill="#8d6e63" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/><path d="M150 156L79.0 197.0A82 82 0 0 1 79.0 115.0z" fill="#52b788" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/><path d="M150 156L79.0 115.0A82 82 0 0 1 150.0 74.0z" fill="#fb8500" stroke="#14213d" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M196 40a46 34 0 1 1 26 30l-20 14 6-18a46 34 0 0 1-12-26z" fill="#fffdf7"/><text x="242" y="62" text-anchor="middle" font-family="Georgia, serif" font-size="34" font-weight="700" fill="#4895ef">?</text></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

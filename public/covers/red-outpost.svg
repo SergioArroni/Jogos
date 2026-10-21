@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#d00000"/><stop offset="1" stop-color="#370617"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.3" r="0.45"><stop offset="0" stop-color="#ffba08" stop-opacity="0.35"/><stop offset="1" stop-color="#ffba08" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M0 230C80 200 220 200 300 226V400H0z" fill="#9d0208"/>
+    <path d="M70 224a56 50 0 0 1 112 0z" fill="#ffccd5" opacity="0.85"/><path d="M90 224V196h18v28M140 224V188h20v36" fill="#6a040f"/>
+    <polygon points="126.0,156.0 129.9,166.6 141.2,167.1 132.4,174.1 135.4,184.9 126.0,178.7 116.6,184.9 119.6,174.1 110.8,167.1 122.1,166.6" fill="#ffba08"/>
+    <path d="M224 90C238 104 242 140 238 200H210C206 140 210 104 224 90z" fill="#e9ecef"/><circle cx="224" cy="130" r="9" fill="#ffba08"/><path d="M210 180l-12 24h12zM238 180l12 24h-12z" fill="#6a040f"/>
+    <path d="M200 206h48" stroke="#370617" stroke-width="6"/><circle cx="50" cy="60" r="2" fill="#ffd6a5"/><circle cx="100" cy="90" r="1.5" fill="#ffd6a5"/><circle cx="160" cy="50" r="2" fill="#ffd6a5"/><circle cx="270" cy="60" r="1.5" fill="#ffd6a5"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

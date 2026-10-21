@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#bde0fe"/><stop offset="1" stop-color="#90be6d"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.275" r="0.45"><stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M0 196C100 180 200 182 300 194V400H0z" fill="#6a994e"/>
+    <rect x="70" y="120" width="110" height="78" fill="#bc6c25"/><path d="M60 124L125 72L190 124z" fill="#e9c46a"/><path d="M76 116L125 78L174 116" stroke="#d4a373" stroke-width="3" fill="none"/>
+    <rect x="114" y="160" width="22" height="38" fill="#6f4518"/><rect x="84" y="136" width="20" height="18" fill="#fff3b0"/><rect x="148" y="136" width="20" height="18" fill="#fff3b0"/>
+    <path d="M20 232H280M20 248H280" stroke="#f1e3c6" stroke-width="5"/><rect x="30" y="222" width="7" height="34" fill="#f1e3c6"/><rect x="80" y="222" width="7" height="34" fill="#f1e3c6"/><rect x="130" y="222" width="7" height="34" fill="#f1e3c6"/><rect x="180" y="222" width="7" height="34" fill="#f1e3c6"/><rect x="230" y="222" width="7" height="34" fill="#f1e3c6"/><rect x="270" y="222" width="7" height="34" fill="#f1e3c6"/>
+    <g transform="translate(222 176)"><ellipse rx="26" ry="18" fill="#fffdf7"/><circle cx="-16" cy="-10" r="10" fill="#fffdf7"/><circle cx="-4" cy="-10" r="10" fill="#fffdf7"/><circle cx="8" cy="-10" r="10" fill="#fffdf7"/><circle cx="24" cy="-6" r="10" fill="#3d2c2e"/><path d="M-14 16v10M10 16v10" stroke="#3d2c2e" stroke-width="5"/></g>
+    <path d="M36 196V140" stroke="#e9c46a" stroke-width="3"/><ellipse cx="36" cy="136" rx="5" ry="12" fill="#e9c46a"/><path d="M52 196V140" stroke="#e9c46a" stroke-width="3"/><ellipse cx="52" cy="136" rx="5" ry="12" fill="#e9c46a"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

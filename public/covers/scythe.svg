@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#f6bd60"/><stop offset="1" stop-color="#84a59d"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.275" r="0.45"><stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M0 220C100 200 200 206 300 214V400H0z" fill="#a98467"/><path d="M0 230C100 212 200 218 300 224" stroke="#e9c46a" stroke-width="3" fill="none"/><path d="M0 246C100 228 200 234 300 240" stroke="#e9c46a" stroke-width="3" fill="none"/><path d="M0 262C100 244 200 250 300 256" stroke="#e9c46a" stroke-width="3" fill="none"/>
+    <path d="M140 150L110 224M170 150L210 224M110 224h-14M210 224h14" stroke="#495057" stroke-width="10" stroke-linecap="round"/><circle cx="124" cy="188" r="7" fill="#343a40"/><circle cx="190" cy="188" r="7" fill="#343a40"/>
+    <rect x="110" y="96" width="94" height="62" rx="12" fill="#6c757d"/><rect x="128" y="108" width="34" height="22" rx="5" fill="#ffd166"/><rect x="180" y="66" width="12" height="32" fill="#495057"/>
+    <path d="M186 60c-8-14 8-18 2-32" stroke="#dee2e6" stroke-width="7" fill="none" stroke-linecap="round" opacity="0.7"/><path d="M110 120H78l-10 12" stroke="#495057" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M60 224v-30M60 200l-10 12M60 200l14-14" stroke="#3d2c2e" stroke-width="5" stroke-linecap="round"/><circle cx="60" cy="186" r="7" fill="#3d2c2e"/><path d="M74 186l14-30q14 6 10 22" stroke="#3d2c2e" stroke-width="3" fill="none"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

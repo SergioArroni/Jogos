@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#344e41"/><stop offset="1" stop-color="#0b0f0b"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.3" r="0.45"><stop offset="0" stop-color="#ffd166" stop-opacity="0.35"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M0 270L60 200L100 236L160 160L220 230L260 196L300 240V400H0z" fill="#1b2a1f"/>
+    <ellipse cx="150" cy="118" rx="62" ry="58" fill="none" stroke="#e9b949" stroke-width="16"/><ellipse cx="150" cy="118" rx="62" ry="58" fill="none" stroke="#fff3b0" stroke-width="3" stroke-dasharray="40 160" stroke-dashoffset="20"/>
+    <circle cx="80" cy="236" r="37" fill="#0b0f0b"/><path d="M80 236L80.0 206.0A30 30 0 0 1 106.0 221.0z" fill="#e9b949" stroke="#0b0f0b" stroke-width="5" stroke-linejoin="round"/><path d="M80 236L106.0 251.0A30 30 0 0 1 80.0 266.0z" fill="#bc6c25" stroke="#0b0f0b" stroke-width="5" stroke-linejoin="round"/><path d="M80 236L80.0 266.0A30 30 0 0 1 54.0 251.0z" fill="#e9b949" stroke="#0b0f0b" stroke-width="5" stroke-linejoin="round"/><path d="M80 236L54.0 251.0A30 30 0 0 1 54.0 221.0z" fill="#a3b18a" stroke="#0b0f0b" stroke-width="5" stroke-linejoin="round"/><path d="M80 236L54.0 221.0A30 30 0 0 1 80.0 206.0z" fill="#bc6c25" stroke="#0b0f0b" stroke-width="5" stroke-linejoin="round"/>
+    <path transform="translate(222 70) scale(1)" d="M0-14l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#fff3b0"/><path transform="translate(70 76) scale(0.7142857142857143)" d="M0-14l4 10 10 4-10 4-4 10-4-10-10-4 10-4z" fill="#fff3b0"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#ffb703"/><stop offset="1" stop-color="#9d0208"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.375" r="0.45"><stop offset="0" stop-color="#fff3b0" stop-opacity="0.35"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <circle cx="200" cy="150" r="54" fill="#fff3b0" opacity="0.9"/>
+    <path d="M0 220H170L178 236L166 250L180 270L170 400H0z" fill="#370617"/>
+    <path d="M150 220v-36M150 196l-10 12M150 196l10 12M150 220l-8 16M150 220l8 16" stroke="#370617" stroke-width="6" stroke-linecap="round"/><circle cx="150" cy="176" r="9" fill="#370617"/>
+    <path d="M60 70q8-8 16 0q8-8 16 0" stroke="#370617" stroke-width="3" fill="none"/><path d="M86 60q8-8 16 0q8-8 16 0" stroke="#370617" stroke-width="3" fill="none"/><path d="M112 72q8-8 16 0q8-8 16 0" stroke="#370617" stroke-width="3" fill="none"/></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

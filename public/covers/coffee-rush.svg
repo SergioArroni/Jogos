@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#e6ccb2"/><stop offset="1" stop-color="#7f5539"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.375" r="0.45"><stop offset="0" stop-color="#ffffff" stop-opacity="0.35"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <path d="M118 96c-10-12 10-20 0-32" stroke="#fffdf7" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/><path d="M150 90c-10-12 10-20 0-32" stroke="#fffdf7" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/><path d="M182 96c-10-12 10-20 0-32" stroke="#fffdf7" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+    <path d="M108 112H192L180 246H120z" fill="#fffdf7"/><rect x="100" y="100" width="100" height="18" rx="7" fill="#3d2c2e"/><rect x="112" y="92" width="76" height="12" rx="5" fill="#3d2c2e"/>
+    <path d="M113 156H187L183 204H117z" fill="#b08968"/><circle cx="150" cy="180" r="12" fill="#fffdf7"/><path d="M144 180q6-8 12 0" stroke="#7f5539" stroke-width="3" fill="none"/>
+    <g transform="rotate(20 56 220)"><ellipse cx="56" cy="220" rx="14" ry="10" fill="#582f0e"/><path d="M46 220q10-4 20 0" stroke="#b08968" stroke-width="2.5" fill="none"/></g><g transform="rotate(-30 240 200)"><ellipse cx="240" cy="200" rx="14" ry="10" fill="#582f0e"/><path d="M230 200q10-4 20 0" stroke="#b08968" stroke-width="2.5" fill="none"/></g><g transform="rotate(60 74 254)"><ellipse cx="74" cy="254" rx="14" ry="10" fill="#582f0e"/><path d="M64 254q10-4 20 0" stroke="#b08968" stroke-width="2.5" fill="none"/></g><g transform="rotate(10 222 250)"><ellipse cx="222" cy="250" rx="14" ry="10" fill="#582f0e"/><path d="M212 250q10-4 20 0" stroke="#b08968" stroke-width="2.5" fill="none"/></g></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

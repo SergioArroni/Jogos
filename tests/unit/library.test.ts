@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { LIBRARY, coverUrl, findInLibrary, libraryKey } from '../../src/content/library';
 import { seedGames } from '../../src/domain/seed';
@@ -22,8 +22,19 @@ describe('game library', () => {
     expect(findInLibrary('Catan')).toBeUndefined();
   });
 
-  it('covers every one of the simplest starting games', () => {
-    const missing = seedGames().filter(game => game.weight === 1 && !findInLibrary(game.name)).map(game => game.name);
+  it('covers every game of the starting collection', () => {
+    const missing = seedGames().filter(game => !findInLibrary(game.name)).map(game => game.name);
     expect(missing).toEqual([]);
+  });
+
+  it('has no cover without a game', () => {
+    const slugs = new Set(LIBRARY.map(entry => entry.slug));
+    const orphans = readdirSync('public/covers').map(file => file.replace(/\.svg$/, '')).filter(slug => !slugs.has(slug));
+    expect(orphans).toEqual([]);
+  });
+
+  it('lists the games from the simplest to the most complex', () => {
+    const weights = LIBRARY.map(entry => seedGames().find(game => findInLibrary(game.name) === entry)?.weight).filter(weight => weight != null);
+    expect(weights).toEqual([...weights].sort((a, b) => a - b));
   });
 });
