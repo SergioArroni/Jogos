@@ -1,5 +1,6 @@
 <script lang="ts">
   import Modal from '../components/Modal.svelte';
+  import { coverUrl, findInLibrary } from '../content/library';
   import { gameArt } from '../domain/art';
   import { averageRating } from '../domain/stats';
   import { formatDecimal, formatShortDate, nameKey } from '../domain/text';
@@ -17,6 +18,8 @@
   let { game, onclose, onedit, ondelete, onplay }: Props = $props();
 
   const art = $derived(game ? gameArt(game) : null);
+  const entry = $derived(game ? findInLibrary(game.name) : undefined);
+  const rules = $derived(entry?.rules);
   const stat = $derived(game ? app.stats.games.get(nameKey(game.name)) : undefined);
   const rating = $derived(averageRating(stat));
   const canPlay = $derived(!!app.user && !app.playsMissing);
@@ -31,7 +34,12 @@
 <Modal open={!!game} title={game?.name ?? ''} {onclose} dialogClass="detail-dialog" labelId="detailTitle">
   {#snippet header()}
     <div class="detail-hero pattern-{art?.pattern}" style:--c1={art?.from} style:--c2={art?.to}>
-      <span class="cover-emoji" aria-hidden="true">{art?.emoji}</span>
+      {#if entry}
+        <img class="cover-art hero-blur" src={coverUrl(entry)} alt="" />
+        <img class="hero-art" src={coverUrl(entry)} alt="" />
+      {:else}
+        <span class="cover-emoji" aria-hidden="true">{art?.emoji}</span>
+      {/if}
       <button class="x" type="button" aria-label="Cerrar" onclick={onclose}>×</button>
     </div>
   {/snippet}
@@ -43,6 +51,20 @@
         {#each game.types as type (type)}<span class="tag green">{type}</span>{/each}
       </div>
       {#if game.notes}<p class="details">{game.notes}</p>{/if}
+      {#if rules}
+        <section class="how-to" aria-labelledby="howToTitle">
+          <h3 id="howToTitle">Cómo se juega</h3>
+          <p><strong>Objetivo.</strong> {rules.goal}</p>
+          {#if rules.setup}<p><strong>Preparación.</strong> {rules.setup}</p>{/if}
+          <p><strong>Cómo va la partida</strong></p>
+          <ol>{#each rules.turn as step (step)}<li>{step}</li>{/each}</ol>
+          <p><strong>Final.</strong> {rules.end}</p>
+          {#if rules.tip}<p class="how-to-tip">💡 {rules.tip}</p>{/if}
+          {#if rules.caveat}<p class="notice">{rules.caveat}</p>{/if}
+        </section>
+      {:else if entry}
+        <p class="notice">Aún no tenemos una explicación fiable de este juego: mejor mirar el reglamento de la caja.</p>
+      {/if}
       {#if canPlay}
         <div class="detail-stats">
           {#if stat}

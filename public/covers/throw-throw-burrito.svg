@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#f6bd60"/><stop offset="1" stop-color="#e76f51"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.375" r="0.45"><stop offset="0" stop-color="#fff3b0" stop-opacity="0.35"/><stop offset="1" stop-color="#fff3b0" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <g stroke="#fff3e0" stroke-width="6" stroke-linecap="round" opacity="0.7"><path d="M22 120h56"/><path d="M36 144h44"/><path d="M28 168h50"/></g>
+    <g transform="translate(160 146) rotate(-18)">
+      <ellipse cx="0" cy="0" rx="78" ry="38" fill="#f3d9a4"/>
+      <path d="M-60-18c30 12 90 12 120 0M-66 4c40 12 92 12 132 0M-58 22c34 8 82 8 116 0" stroke="#d9b06c" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <ellipse cx="74" cy="0" rx="16" ry="36" fill="#f8e9c9"/>
+      <circle cx="72" cy="-14" r="9" fill="#6a994e"/><circle cx="78" cy="6" r="8" fill="#d62828"/><circle cx="68" cy="16" r="7" fill="#fffdf7"/><circle cx="82" cy="-4" r="5" fill="#bc6c25"/>
+      <circle cx="-30" cy="-6" r="5" fill="#3d2c2e"/><circle cx="-6" cy="-6" r="5" fill="#3d2c2e"/><path d="M-30 10q12 12 24 0" stroke="#3d2c2e" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </g>
+    <path d="M232 54l8 20 22-6-14 18 16 14-22-2-4 22-10-20-20 8 12-18-16-14 22 2z" fill="#fff3b0"/>
+    <g transform="translate(96 242) rotate(24) scale(0.45)"><ellipse rx="78" ry="38" fill="#f3d9a4"/><ellipse cx="74" rx="16" ry="36" fill="#f8e9c9"/><circle cx="74" cy="-10" r="10" fill="#6a994e"/><circle cx="76" cy="10" r="9" fill="#d62828"/></g></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

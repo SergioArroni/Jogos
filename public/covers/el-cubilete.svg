@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#9d0208"/><stop offset="1" stop-color="#370617"/></linearGradient>
+<radialGradient id="glow" cx="0.5" cy="0.425" r="0.45"><stop offset="0" stop-color="#ffba08" stop-opacity="0.35"/><stop offset="1" stop-color="#ffba08" stop-opacity="0"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0.7 0 0 0 -0.3"/></filter>
+<filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.25"/></filter>
+</defs>
+<rect width="300" height="400" fill="url(#bg)"/>
+<rect width="300" height="400" fill="url(#glow)"/>
+<g filter="url(#shadow)">
+    <g transform="rotate(-24 120 150)"><path d="M70 70h100l-12 140H82z" fill="#6f1d1b"/><path d="M70 70h100l-2 18H72z" fill="#432818"/>
+      <path d="M78 104h84M80 186h80" stroke="#bb9457" stroke-width="3" stroke-dasharray="6 5"/><ellipse cx="120" cy="210" rx="38" ry="8" fill="#2b0f0e"/></g>
+    <g transform="translate(196 214) rotate(18)"><rect x="-23" y="-23" width="46" height="46" rx="7.666666666666667" fill="#fffdf7"/><circle cx="-11.5" cy="-11.5" r="4.181818181818182" fill="#2b2d42"/><circle cx="11.5" cy="-11.5" r="4.181818181818182" fill="#2b2d42"/><circle cx="0" cy="0" r="4.181818181818182" fill="#2b2d42"/><circle cx="-11.5" cy="11.5" r="4.181818181818182" fill="#2b2d42"/><circle cx="11.5" cy="11.5" r="4.181818181818182" fill="#2b2d42"/></g><g transform="translate(148 252) rotate(-12)"><rect x="-20" y="-20" width="40" height="40" rx="6.666666666666667" fill="#fffdf7"/><circle cx="-10" cy="-10" r="3.6363636363636362" fill="#2b2d42"/><circle cx="0" cy="0" r="3.6363636363636362" fill="#2b2d42"/><circle cx="10" cy="10" r="3.6363636363636362" fill="#2b2d42"/></g><g transform="translate(236 266) rotate(30)"><rect x="-18" y="-18" width="36" height="36" rx="6" fill="#fffdf7"/><circle cx="-9" cy="-9" r="3.272727272727273" fill="#2b2d42"/><circle cx="9" cy="-9" r="3.272727272727273" fill="#2b2d42"/><circle cx="-9" cy="0" r="3.272727272727273" fill="#2b2d42"/><circle cx="9" cy="0" r="3.272727272727273" fill="#2b2d42"/><circle cx="-9" cy="9" r="3.272727272727273" fill="#2b2d42"/><circle cx="9" cy="9" r="3.272727272727273" fill="#2b2d42"/></g></g>
+<rect width="300" height="400" filter="url(#grain)" opacity="0.3"/>
+</svg>

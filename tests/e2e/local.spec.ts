@@ -119,3 +119,11 @@ test('theme choice is applied and remembered', async ({ page }) => {
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
+
+test('simple games have drawn covers and explain how to play', async ({ page }) => {
+  await page.getByLabel('Buscar en la colección').fill('time');
+  await expect(covers(page).locator('img.cover-art')).toHaveAttribute('src', '/covers/times-up.svg');
+  await covers(page).first().click();
+  await expect(page.getByRole('heading', { name: 'Cómo se juega' })).toBeVisible();
+  await expect(page.getByText('Ronda 2: solo una palabra por carta.', { exact: false })).toBeVisible();
+});

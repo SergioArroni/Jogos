@@ -93,3 +93,11 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Alternativas:** mirarlas solo en el panel de Vercel; contar visitas en una tabla propia de Supabase (contaría también la APK, pero es más código y datos que guardar).
 - **Consecuencias:** gratis hasta 50.000 visitas al mes y con 1 mes de historial (plan Hobby). La APK no se cuenta. Sin eventos personalizados en este plan, no se sabe qué sección se usa más. El token de Vercel da acceso a la cuenta, así que debe caducar y guardarse como variable sensible.
 
+
+## 12. Portadas y reglas como contenido del repositorio
+**Estado:** Aceptada, en `dev`
+
+- **Contexto:** las tarjetas solo tenían un emoji y un degradado, y no había forma de saber cómo se juega a cada juego.
+- **Decisión:** una biblioteca común (`src/content/library.ts`) guarda, para cada juego, su portada y un resumen de cómo se juega. Se busca por nombre (sin tildes, mayúsculas ni lo que va entre paréntesis), así que sirve para cualquier colección. Las portadas son ilustraciones vectoriales propias (`public/covers/`, generadas con `scripts/covers.mjs`), sin texto, porque la app pone el título encima. Si no hay reglas fiables de un juego, no se inventan: se avisa de que hay que mirar la caja.
+- **Alternativas:** guardar portada y reglas en Supabase (cada uno con las suyas: más tablas y nadie las rellenaría); usar fotos de las cajas o de BoardGameGeek (derechos de autor y tamaños desiguales); que cada usuario suba su foto (Supabase Storage y moderación).
+- **Consecuencias:** van con la app, así que funcionan sin conexión y en la APK, y no ocupan base de datos. Añadir un juego o corregir unas reglas requiere un cambio de código y publicar. Un juego con un nombre que la biblioteca no conoce se queda con el emoji.
