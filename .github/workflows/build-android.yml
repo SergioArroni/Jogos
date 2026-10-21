@@ -53,7 +53,9 @@ jobs:
           export PATH="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1):$PATH"
           npx cap build android --androidreleasetype APK --signing-type apksigner             --keystorepath "$RUNNER_TEMP/release.jks" --keystorepass "$KEYSTORE_PASSWORD"             --keystorealias "$KEY_ALIAS" --keystorealiaspass "$KEYSTORE_PASSWORD"
           rm -f "$RUNNER_TEMP/release.jks"
-          cp "$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)" el-baul-de-los-jogos.apk
+          ls android/app/build/outputs/apk/release
+          # Capacitor leaves both the unsigned and the signed APK here: ship the signed one.
+          cp android/app/build/outputs/apk/release/*-signed.apk el-baul-de-los-jogos.apk
       - name: Verify signature
         run: |
           APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
