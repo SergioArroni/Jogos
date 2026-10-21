@@ -45,10 +45,12 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_ALIAS: el-baul
         run: |
           test -n "$KEYSTORE_BASE64" || { echo "::error::Faltan los secretos ANDROID_KEYSTORE_* del repositorio"; exit 1; }
           echo "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+          # apksigner lives in the Android build-tools, which are installed but not on the PATH.
+          export PATH="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1):$PATH"
           npx cap build android --androidreleasetype APK --signing-type apksigner             --keystorepath "$RUNNER_TEMP/release.jks" --keystorepass "$KEYSTORE_PASSWORD"             --keystorealias "$KEY_ALIAS" --keystorealiaspass "$KEYSTORE_PASSWORD"
           rm -f "$RUNNER_TEMP/release.jks"
           cp "$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)" el-baul-de-los-jogos.apk
