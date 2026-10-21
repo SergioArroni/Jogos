@@ -26,7 +26,7 @@ La página [`login.html`](login.html) permite crear una cuenta con correo, contr
 
 ## Desarrollo
 
-La app está hecha con Vite + TypeScript + Svelte (`src/`). Lee [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) para entender las capas, las ramas (`dev` → `staging` → `main`) y los tests.
+La app está hecha con Vite + TypeScript + Svelte (`src/`). Lee [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) para entender las capas, las ramas (`dev` → `main`) y los tests, y [`docs/DECISIONES.md`](docs/DECISIONES.md) para saber por qué se eligió cada cosa.
 
 ```bash
 npm install

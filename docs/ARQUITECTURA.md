@@ -34,15 +34,14 @@ Cada capa solo conoce a la de debajo:
 ## Ramas
 
 ```
-dev ──▶ staging ──▶ main
+dev ──▶ main
 ```
 
-- **dev**: donde se trabaja. Vercel publica una URL de prueba para cada push.
-- **staging**: lo que va a salir, para probarlo con calma en su URL de prueba.
+- **dev**: donde se trabaja y se prueba. Vercel publica una URL de prueba para cada push.
 - **main**: producción (https://el-baul-de-los-jogos.vercel.app) y la APK de Android.
 
-Las tres usan **el mismo proyecto de Supabase**, así que los datos que crees probando
-en `dev` o `staging` son reales. Si algún día hace falta aislarlos, se crea un segundo
+Las dos usan **el mismo proyecto de Supabase**, así que los datos que crees probando
+en `dev` son reales. Si algún día hace falta aislarlos, se crea un segundo
 proyecto de Supabase para pruebas.
 
 ## Tests
@@ -54,8 +53,9 @@ proyecto de Supabase para pruebas.
 | `npx playwright test --project=local --project=local-mobile` | La app real en Chrome, en modo local (sin backend) | Chrome |
 | `npm run test:integration` | La app contra Postgres + PostgREST en Docker con **todas las migraciones de `sql/` y las reglas RLS**, con varios usuarios | Docker |
 
-GitHub Actions (`.github/workflows/tests.yml`) ejecuta todo en cada push a `dev`,
-`staging` y `main`.
+GitHub Actions (`.github/workflows/tests.yml`) ejecuta todo en cada push a `dev` y `main`.
+
+Las decisiones importantes y su porqué están en [`DECISIONES.md`](DECISIONES.md).
 
 ## Desarrollo
 
