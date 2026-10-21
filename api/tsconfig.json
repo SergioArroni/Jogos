@@ -1,0 +1,14 @@
+{
+  "//": "Vercel compiles api/*.ts with the nearest tsconfig. The root one is for the Vite app (ESM, noEmit); functions run on Node as CommonJS.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["**/*.ts"]
+}
