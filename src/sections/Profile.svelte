@@ -1,0 +1,120 @@
+<script lang="ts">
+  import { onDestroy } from 'svelte';
+  import Avatar from '../components/Avatar.svelte';
+  import { localSetting } from '../data/local';
+  import { toAvatarWebp, updateNickname, uploadAvatar } from '../data/profile';
+  import { isValidNickname } from '../domain/text';
+  import { app } from '../stores/app.svelte';
+  import { theme, type ThemePreference } from '../stores/theme.svelte';
+
+  let nickname = $state(app.nickname);
+  let status = $state('');
+  let avatarStatus = $state('Puedes usar una imagen JPG, PNG o WebP de hasta 12 MB.');
+  let pending = $state<{ file: File; url: string } | null>(null);
+  let saving = $state(false);
+  let picker: HTMLInputElement;
+
+  const displayName = $derived(app.nickname || app.user?.user_metadata?.nickname || 'Tu perfil');
+  const themes: [ThemePreference, string][] = [['system', '◐ Sistema'], ['light', '☀ Claro'], ['dark', '☾ Oscuro']];
+
+  $effect(() => {
+    nickname = app.nickname;
+  });
+
+  function clearPreview() {
+    if (pending) URL.revokeObjectURL(pending.url);
+    pending = null;
+    picker.value = '';
+  }
+  onDestroy(() => pending && URL.revokeObjectURL(pending.url));
+
+  function choose() {
+    const file = picker.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) return void ((picker.value = ''), (avatarStatus = 'Elige un archivo de imagen.'));
+    if (file.size > 12 * 1024 * 1024) return void ((picker.value = ''), (avatarStatus = 'La imagen debe pesar menos de 12 MB.'));
+    if (pending) URL.revokeObjectURL(pending.url);
+    pending = { file, url: URL.createObjectURL(file) };
+    avatarStatus = 'Vista previa. Guarda la foto para aplicarla a tu perfil.';
+  }
+
+  async function savePhoto() {
+    if (!pending) return;
+    saving = true;
+    avatarStatus = 'Preparando y guardando la foto…';
+    try {
+      const blob = await toAvatarWebp(pending.file);
+      if (app.user) app.avatarUrl = await uploadAvatar(app.user.id, blob);
+      else {
+        app.avatarUrl = await new Promise<string>(resolve => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+        localSetting.set('ludoteca_avatar', app.avatarUrl);
+      }
+      clearPreview();
+      avatarStatus = 'Foto de perfil actualizada.';
+    } catch (error) {
+      console.error('Error al guardar foto de perfil:', error);
+      const detail = (error as Error).message || 'Error desconocido';
+      const setup = /bucket|avatar_path|row-level security/i.test(detail);
+      avatarStatus = setup
+        ? `Supabase rechazó la foto: ${detail}. Revisa y ejecuta sql/community-plays.sql en el proyecto.`
+        : `No se pudo guardar la foto: ${detail}`;
+    } finally {
+      saving = false;
+    }
+  }
+
+  async function saveProfile(event: SubmitEvent) {
+    event.preventDefault();
+    const value = nickname.trim();
+    if (!isValidNickname(value)) return void (status = 'El apodo debe tener entre 3 y 24 caracteres válidos.');
+    status = 'Guardando…';
+    try {
+      if (app.user) await updateNickname(app.user.id, value);
+      else localSetting.set('ludoteca_nickname', value);
+      app.nickname = value;
+      status = 'Perfil guardado.';
+    } catch (error) {
+      status = (error as Error).message;
+    }
+  }
+</script>
+
+<section class="panel active">
+  <div class="sectionhead"><div><h2>Mi perfil</h2><p>Actualiza tu foto, apodo y preferencias.</p></div></div>
+  <form class="card profile-card" style="margin-top:16px" onsubmit={saveProfile}>
+    <div class="profile-top">
+      <Avatar userId={app.user?.id} name={displayName} size="" className="profile-avatar-large" src={pending?.url} />
+      <div>
+        <h3>{displayName}</h3>
+        <p>{app.user?.email ?? 'Modo local'}</p>
+        <input type="file" accept="image/*" hidden bind:this={picker} onchange={choose} />
+        {#if pending}
+          <div class="avatar-actions">
+            <button class="btn small" type="button" disabled={saving} onclick={savePhoto}>Guardar foto</button>
+            <button class="btn ghost small" type="button" disabled={saving} onclick={() => { clearPreview(); avatarStatus = 'No se han guardado cambios en la foto.'; }}>Cancelar</button>
+          </div>
+        {:else}
+          <button class="btn secondary small" type="button" style="margin-top:10px" onclick={() => picker.click()}>Elegir foto</button>
+        {/if}
+        <p class="notice" role="status">{avatarStatus}</p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="nickname">Apodo único</label>
+      <input id="nickname" minlength="3" maxlength="24" pattern={'[A-Za-z0-9_.\\-]{3,24}'} required placeholder="Ej. su_morenito_19" bind:value={nickname} />
+      <small>3–24 letras, números, puntos, guiones o guiones bajos.</small>
+    </div>
+    <p class="notice" role="status">{status}</p>
+    <button class="btn" type="submit">Guardar cambios</button>
+  </form>
+  <div class="sectionhead" style="margin-top:34px"><div><h2 style="font-size:1.35rem">Apariencia</h2><p>Elige un tema o sigue el que usa tu dispositivo.</p></div></div>
+  <div class="theme-options theme-settings" role="group" aria-label="Elegir tema">
+    {#each themes as [value, label] (value)}
+      <button class="theme-choice" type="button" aria-pressed={theme.preference === value} onclick={() => theme.set(value)}>{label}</button>
+    {/each}
+  </div>
+</section>

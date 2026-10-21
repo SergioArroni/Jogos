@@ -1,0 +1,112 @@
+<script lang="ts">
+  import GameCover from '../components/GameCover.svelte';
+  import { typeEmoji } from '../domain/art';
+  import { buildShelves, byName, filterGames, noFilters, topTypes, type CatalogFilters } from '../domain/catalog';
+  import type { Game } from '../domain/types';
+  import { app, type Tab } from '../stores/app.svelte';
+  import { askConfirm } from '../stores/confirm.svelte';
+  import GameDetail from './GameDetail.svelte';
+  import GameForm from './GameForm.svelte';
+
+  let { navigate, onplay }: { navigate: (tab: Tab) => void; onplay: (gameName: string) => void } = $props();
+
+  let filters = $state<CatalogFilters>({ search: '', type: '', players: 0, place: '' });
+  let detail = $state<Game | null>(null);
+  let editing = $state<{ open: boolean; game?: Game }>({ open: false });
+
+  const filtering = $derived(!noFilters(filters));
+  const results = $derived(filtering ? filterGames(app.games, filters) : []);
+  const shelves = $derived(filtering ? [] : buildShelves(app.games, app.stats.games, app.plays.length > 0));
+  const types = $derived.by(() => {
+    const list = topTypes(app.games);
+    return filters.type && !list.includes(filters.type) ? [...list, filters.type] : list;
+  });
+
+  const clearFilters = () => (filters = { search: '', type: '', players: 0, place: '' });
+
+  async function remove(game: Game) {
+    detail = null;
+    const ok = await askConfirm({ title: `¿Eliminar «${game.name}»?`, text: 'Se quitará de tu colección.', confirmLabel: 'Eliminar', danger: true });
+    if (ok) app.deleteGame(game.id);
+  }
+</script>
+
+<section class="panel active">
+  <div class="sectionhead">
+    <div><h1>Tu colección</h1><p>Busca un juego por nombre, tipo, jugadores o lugar.</p></div>
+    <button class="btn" onclick={() => (editing = { open: true })}><span aria-hidden="true">＋</span> Añadir juego</button>
+  </div>
+
+  <div class="overview">
+    <div class="overview-item"><strong>{app.games.length}</strong><span>juegos</span></div>
+    <span class="overview-divider"></span>
+    <div class="overview-item"><strong>{app.groups.length}</strong><span>grupos</span></div>
+    <span class="overview-divider"></span>
+    <div class="overview-item"><strong>{app.places.length}</strong><span>lugares</span></div>
+    <span class="overview-spacer"></span>
+    <button class="btn ghost small" type="button" onclick={() => navigate('places')}>Gestionar lugares</button>
+  </div>
+
+  <div class="toolbar catalog-tools">
+    <label class="searchbox"><span aria-hidden="true">⌕</span>
+      <input class="search" type="search" placeholder="Buscar juego, mecánica o nota…" aria-label="Buscar en la colección" bind:value={filters.search} />
+    </label>
+    <select aria-label="Filtrar número de jugadores" bind:value={filters.players}>
+      <option value={0}>Cualquier grupo</option><option value={2}>Funciona a 2</option><option value={4}>4 o más</option>
+      <option value={6}>6 o más</option><option value={8}>8 o más</option>
+    </select>
+    <select aria-label="Filtrar lugar" bind:value={filters.place}>
+      <option value="">Todos los lugares</option>
+      {#each app.places as place (place.id)}<option value={place.name}>{place.name}</option>{/each}
+    </select>
+  </div>
+
+  <div class="type-chips" role="group" aria-label="Filtrar por estilo">
+    <button type="button" class="type-chip" aria-pressed={!filters.type} onclick={() => (filters.type = '')}>Todos</button>
+    {#each types as type (type)}
+      <button type="button" class="type-chip" aria-pressed={filters.type === type} onclick={() => (filters.type = filters.type === type ? '' : type)}>
+        {typeEmoji(type)} {type}
+      </button>
+    {/each}
+  </div>
+
+  {#if !app.games.length}
+    <div class="empty">Tu baúl está vacío. Pulsa «Añadir juego» para guardar el primero.</div>
+  {:else if filtering}
+    <section class="shelf">
+      <div class="shelf-head">
+        <h2>{results.length} {results.length === 1 ? 'juego' : 'juegos'}</h2>
+        <button class="btn ghost small" type="button" onclick={clearFilters}>Quitar filtros</button>
+      </div>
+      {#if results.length}
+        <div class="cover-grid">{#each results as game (game.id)}<GameCover {game} onopen={g => (detail = g)} />{/each}</div>
+      {:else}
+        <div class="empty">No hay juegos con esos filtros. Prueba a cambiar la búsqueda.</div>
+      {/if}
+    </section>
+  {:else}
+    {#each shelves as shelf (shelf.title)}
+      <section class="shelf">
+        <div class="shelf-head"><h2>{shelf.title}</h2><span>{shelf.games.length}</span></div>
+        <div class="shelf-row">{#each shelf.games as game (game.id)}<GameCover {game} onopen={g => (detail = g)} />{/each}</div>
+      </section>
+    {/each}
+    <section class="shelf">
+      <div class="shelf-head"><h2>Toda la colección</h2><span>{app.games.length}</span></div>
+      <div class="cover-grid">{#each [...app.games].sort(byName) as game (game.id)}<GameCover {game} onopen={g => (detail = g)} />{/each}</div>
+    </section>
+  {/if}
+
+  <p class="notice">
+    {app.user ? 'Colección sincronizada con tu cuenta en todos tus dispositivos.' : 'Los datos se guardan en este navegador. Inicia sesión para sincronizarlos con tus otros dispositivos.'}
+  </p>
+</section>
+
+<GameDetail
+  game={detail}
+  onclose={() => (detail = null)}
+  onedit={game => { detail = null; editing = { open: true, game }; }}
+  ondelete={remove}
+  onplay={game => { detail = null; onplay(game.name); }}
+/>
+<GameForm open={editing.open} game={editing.game} onclose={() => (editing = { open: false })} />

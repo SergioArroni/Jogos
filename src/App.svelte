@@ -1,0 +1,63 @@
+<script lang="ts">
+  import ConfirmDialog from './components/ConfirmDialog.svelte';
+  import Header from './components/Header.svelte';
+  import Nav from './components/Nav.svelte';
+  import type { Play } from './domain/types';
+  import Backup from './sections/Backup.svelte';
+  import Catalog from './sections/Catalog.svelte';
+  import Community from './sections/Community.svelte';
+  import GameForm from './sections/GameForm.svelte';
+  import Places from './sections/Places.svelte';
+  import PlayForm from './sections/PlayForm.svelte';
+  import Plays from './sections/Plays.svelte';
+  import Profile from './sections/Profile.svelte';
+  import Recommend from './sections/Recommend.svelte';
+  import Wishlist from './sections/Wishlist.svelte';
+  import { app, type Tab } from './stores/app.svelte';
+
+  // The play form opens from several screens (catalog sheet, plays, group cards), so it lives here.
+  let playDialog = $state<{ open: boolean; play?: Play; group?: string; game?: string }>({ open: false });
+  let editGameId = $state<string | null>(null);
+  const editGame = $derived(app.games.find(g => g.id === editGameId));
+
+  // Hide the loading screen from index.html as soon as we know who is signed in.
+  $effect(() => {
+    if (app.ready) document.documentElement.classList.remove('auth-pending');
+  });
+
+  function navigate(tab: Tab) {
+    if (tab === 'backup' && !app.isAdmin) return;
+    app.tab = tab;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (tab === 'profile') app.loadProfile().catch(error => console.error(error));
+  }
+</script>
+
+<div class="wrap">
+  <Header {navigate} />
+  <Nav {navigate} />
+  <main>
+    {#if app.tab === 'catalog'}
+      <Catalog {navigate} onplay={game => (playDialog = { open: true, game })} />
+    {:else if app.tab === 'places'}
+      <Places />
+    {:else if app.tab === 'recommend'}
+      <Recommend onedit={id => (editGameId = id)} />
+    {:else if app.tab === 'plays'}
+      <Plays onplay={({ play, group }) => (playDialog = { open: true, play, group })} />
+    {:else if app.tab === 'groups'}
+      <Community />
+    {:else if app.tab === 'newGames'}
+      <Wishlist />
+    {:else if app.tab === 'profile'}
+      <Profile />
+    {:else if app.tab === 'backup' && app.isAdmin}
+      <Backup />
+    {/if}
+  </main>
+  <div class="footer">Un baúl para todos tus buenos planes.</div>
+</div>
+
+<PlayForm open={playDialog.open} play={playDialog.play} presetGroup={playDialog.group} presetGame={playDialog.game} onclose={() => (playDialog = { open: false })} />
+<GameForm open={!!editGame} game={editGame} onclose={() => (editGameId = null)} />
+<ConfirmDialog />
