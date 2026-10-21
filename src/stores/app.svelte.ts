@@ -13,6 +13,9 @@ import type {
   Friend, FriendRequest, Game, Group, Person, Place, Play, WishlistGame, WishlistVote,
 } from '../domain/types';
 
+/** Shown when the app opens without connection: the last synced copy is on screen, edits stay on this device. */
+const OFFLINE = 'Sin conexión · los cambios no se guardarán';
+
 export type Tab = 'catalog' | 'recommend' | 'plays' | 'groups' | 'newGames' | 'places' | 'profile' | 'backup';
 
 /**
@@ -66,6 +69,13 @@ class AppStore {
       return;
     }
     const { data, error } = await supabase.auth.getSession();
+    if (error && !navigator.onLine) {
+      // No connection and the saved session needs refreshing: show the local copy and retry when back online.
+      this.ready = true;
+      this.syncStatus = OFFLINE;
+      window.addEventListener('online', () => location.reload(), { once: true });
+      return;
+    }
     if (error) throw error;
     if (!data.session) {
       location.replace('login.html' + location.hash);
@@ -96,8 +106,12 @@ class AppStore {
       saveLocal(this.collection);
       this.syncStatus = 'Sincronizado';
     } catch (error) {
-      this.syncStatus = 'Error de sincronización';
       console.error(error);
+      if (navigator.onLine) this.syncStatus = 'Error de sincronización';
+      else {
+        this.syncStatus = OFFLINE;
+        window.addEventListener('online', () => void this.signedIn(user), { once: true });
+      }
       return;
     }
     await this.loadProfile().catch(error => console.error(error));

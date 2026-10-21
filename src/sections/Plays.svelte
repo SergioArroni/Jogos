@@ -1,6 +1,7 @@
 <script lang="ts">
   import Avatar from '../components/Avatar.svelte';
   import { ratePlay } from '../data/plays';
+  import { tap } from '../platform/native';
   import { playGroupKey } from '../domain/groups';
   import { playStats } from '../domain/stats';
   import { formatDate, formatDecimal, nameKey } from '../domain/text';
@@ -40,6 +41,7 @@
     status = '';
     try {
       await ratePlay(play.id, value ? Number(value) : null);
+      tap();
       await app.reloadPlays();
     } catch (error) {
       status = 'No se pudo guardar la nota: ' + (error as Error).message;

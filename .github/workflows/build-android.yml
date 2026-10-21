@@ -3,10 +3,11 @@ name: Build Android APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -25,9 +26,12 @@ jobs:
           java-version: '21'
       - name: Install dependencies
         run: npm ci
+      # The app ships inside the APK (webDir: dist), so build it first.
+      - name: Build web app
+        run: npm run build
       - name: Create Android project
         run: npm run android:add
-      - name: Generate app icon from assets/
+      - name: Generate app icon and splash screen from assets/
         run: npm run android:icons
       - name: Sync Capacitor
         run: npm run android:sync
@@ -37,7 +41,51 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v7
         with:
-          name: el-baul-de-los-jogos-debug-apk
+          name: el-baul-de-los-jogos-${{ github.ref_name }}-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
+
+  # Installs the APK on an Android emulator and takes screenshots online and offline,
+  # to check the bundled app really starts (and doesn't need the network to show up).
+  smoke-test:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download APK
+        uses: actions/download-artifact@v7
+        with:
+          name: el-baul-de-los-jogos-${{ github.ref_name }}-debug-apk
+      - name: Enable hardware acceleration for the emulator
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Launch the app on an emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: |
+            adb install -r app-debug.apk
+            adb shell am start -W -n es.sergioarroni.miludoteca/.MainActivity
+            sleep 20
+            adb exec-out screencap -p > launch-online.png
+            adb shell am force-stop es.sergioarroni.miludoteca
+            adb shell cmd connectivity airplane-mode enable
+            adb shell am start -W -n es.sergioarroni.miludoteca/.MainActivity
+            sleep 15
+            adb exec-out screencap -p > launch-offline.png
+            adb logcat -d -s Capacitor:* chromium:* > logcat.txt || true
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-screenshots-${{ github.ref_name }}
+          path: |
+            launch-online.png
+            launch-offline.png
+            logcat.txt
+          retention-days: 14

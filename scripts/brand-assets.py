@@ -6,7 +6,7 @@
   (the page picks the colour, so they work in light and dark themes).
 - public/brand/favicon-32.png, icon-192.png, icon-512.png, apple-touch-icon.png:
   browser and home-screen icons (light chest on the app's green).
-- assets/icon-*.png: sources for @capacitor/assets to build the Android icon.
+- assets/icon-*.png, assets/splash*.png: sources for @capacitor/assets (Android icon and splash screen).
 """
 from pathlib import Path
 
@@ -74,3 +74,10 @@ foreground = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
 glyph = shape(fit(chest, 520), CREAM)
 foreground.alpha_composite(glyph, ((1024 - glyph.width) // 2, (1024 - glyph.height) // 2))
 save(foreground, ROOT / "assets" / "icon-foreground.png")
+
+# Splash screens (light and dark phone theme): the full logo centred on the app background.
+for name, background, ink in [("splash.png", CREAM, (29, 41, 35, 255)), ("splash-dark.png", (17, 25, 20, 255), (241, 243, 237, 255))]:
+    splash = Image.new("RGBA", (2732, 2732), background)
+    mark = shape(fit(logo, 1100), ink)
+    splash.alpha_composite(mark, ((2732 - mark.width) // 2, (2732 - mark.height) // 2))
+    save(splash.convert("RGB"), ROOT / "assets" / name)

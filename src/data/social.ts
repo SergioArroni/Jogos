@@ -1,4 +1,5 @@
 import type { FriendRequest, Person } from '../domain/types';
+import { apiUrl } from '../platform/native';
 import { accessToken, requireClient } from './client';
 
 /** Nicknames and signed avatar URLs for the given accounts. */
@@ -32,7 +33,7 @@ export interface LookupResult {
 
 /** Finds app accounts by nickname (or legacy email) through the server, which can see every profile. */
 export async function lookupAccounts(queries: string[]): Promise<LookupResult[]> {
-  const response = await fetch('/api/friend-lookup', {
+  const response = await fetch(apiUrl('/api/friend-lookup'), {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + (await accessToken()), 'Content-Type': 'application/json' },
     body: JSON.stringify({ queries }),

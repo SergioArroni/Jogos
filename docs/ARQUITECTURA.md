@@ -25,6 +25,7 @@ Cada capa solo conoce a la de debajo:
 |---|---|---|
 | `domain/` | Lógica pura: no sabe nada de Supabase ni de pantallas. Fácil de testear. | estadísticas, recomendador, portadas, sync incremental |
 | `data/` | Lo único que habla con Supabase o con `localStorage`. | `collection.ts`, `plays.ts`, `social.ts` |
+| `platform/` | Lo único que habla con el móvil (Capacitor). En la web no hace nada o usa el equivalente del navegador. | barra de estado, botón atrás, vibración, compartir |
 | `stores/` | Estado compartido de la app y acciones (guardar, recargar). | `app.svelte.ts`, `confirm.svelte.ts` |
 | `components/` | Piezas visuales reutilizables. | `Modal`, `Avatar`, `GameCover` |
 | `sections/` | Pantallas completas. | `Catalog`, `Plays`, `Community` |

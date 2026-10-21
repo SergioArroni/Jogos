@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const handleCors = require('./_cors');
 
 const clientOptions = {
   auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
@@ -12,6 +13,7 @@ function send(res, status, body) {
 
 // Resolves nicknames or emails to app accounts so a friend can be linked to a real user.
 module.exports = async function friendLookup(req, res) {
+  if (handleCors(req, res)) return;
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return send(res, 405, { error: 'Método no permitido.' });

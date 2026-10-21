@@ -2,6 +2,7 @@
   import Avatar from '../components/Avatar.svelte';
   import Modal from '../components/Modal.svelte';
   import { deletePlay, savePlay, type PlayerDraft } from '../data/plays';
+  import { tap } from '../platform/native';
   import { groupMembers, playGroupKey, splitGroupKey } from '../domain/groups';
   import { localToday, nameKey } from '../domain/text';
   import type { Play } from '../domain/types';
@@ -108,6 +109,7 @@
         game_name: form.game.trim(), played_on: form.date, place: form.place || null, notes: form.notes.trim() || null,
         group_owner: key?.owner ?? null, group_key: key?.id ?? null, group_name: key ? group?.name ?? play?.group_name ?? null : null,
       }, $state.snapshot(players), me, play);
+      tap();
       app.playView = form.group;
       await app.reloadPlays();
       onclose();

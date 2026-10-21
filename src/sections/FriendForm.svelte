@@ -2,6 +2,7 @@
   import { untrack } from 'svelte';
   import Modal from '../components/Modal.svelte';
   import { lookupAccounts } from '../data/social';
+  import { isNative, shareLink, tap } from '../platform/native';
   import { isValidNickname, nameKey, nicknameSuggestion, withSuffix } from '../domain/text';
   import type { Friend } from '../domain/types';
   import { app, uid } from '../stores/app.svelte';
@@ -22,6 +23,7 @@
 
   const inviteLink = $derived(invited ? new URL('login.html?signup=1&' + (invited.invite
     ? 'nickname=' + encodeURIComponent(invited.invite) : 'email=' + encodeURIComponent(invited.email ?? '')), location.href).href : '');
+  const inviteText = '¡Hola! Te he añadido como amigo en El Baúl de los Jogos. Crea tu cuenta aquí para que organicemos partidas juntos:';
   const title = $derived(step === 'invite' && invited ? 'Invitar a ' + invited.name : friend ? 'Editar amigo' : 'Añadir amigo');
 
   $effect(() => {
@@ -99,6 +101,7 @@
     }
     const saved: Friend = { id, name, ...Object.fromEntries(Object.entries(linked).filter(([, v]) => v != null)) };
     app.upsertFriend(saved);
+    tap();
     if (saved.invite && saved.invite !== previous?.invite) {
       invited = saved;
       step = 'invite';
@@ -140,8 +143,11 @@
     <p class="notice" role="status">{inviteStatus}</p>
     <div class="formactions">
       <button type="button" class="btn ghost" onclick={onclose}>Listo</button>
-      <a class="btn secondary" target="_blank" rel="noopener"
-        href={'https://wa.me/?text=' + encodeURIComponent('¡Hola! Te he añadido como amigo en El Baúl de los Jogos. Crea tu cuenta aquí para que organicemos partidas juntos: ' + inviteLink)}>WhatsApp</a>
+      {#if isNative}
+        <button type="button" class="btn secondary" onclick={() => shareLink('El Baúl de los Jogos', inviteText, inviteLink)}>Compartir</button>
+      {:else}
+        <a class="btn secondary" target="_blank" rel="noopener" href={'https://wa.me/?text=' + encodeURIComponent(inviteText + ' ' + inviteLink)}>WhatsApp</a>
+      {/if}
       <button type="button" class="btn" onclick={copyLink}>Copiar enlace</button>
     </div>
   {/if}

@@ -13,6 +13,7 @@
   import Profile from './sections/Profile.svelte';
   import Recommend from './sections/Recommend.svelte';
   import Wishlist from './sections/Wishlist.svelte';
+  import { handleBackButton, hideSplash } from './platform/native';
   import { app, type Tab } from './stores/app.svelte';
 
   // The play form opens from several screens (catalog sheet, plays, group cards), so it lives here.
@@ -22,7 +23,17 @@
 
   // Hide the loading screen from index.html as soon as we know who is signed in.
   $effect(() => {
-    if (app.ready) document.documentElement.classList.remove('auth-pending');
+    if (!app.ready) return;
+    document.documentElement.classList.remove('auth-pending');
+    hideSplash();
+  });
+
+  // Android back button: close dialogs first, then return to the catalog, then leave the app.
+  handleBackButton(() => {
+    if (app.tab === 'plays' && app.playView !== null) app.playView = null;
+    else if (app.tab !== 'catalog') navigate('catalog');
+    else return false;
+    return true;
   });
 
   function navigate(tab: Tab) {

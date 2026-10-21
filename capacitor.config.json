@@ -1,9 +1,14 @@
 {
   "appId": "es.sergioarroni.miludoteca",
-  "appName": "El Baul de los Jogos",
-  "webDir": "www",
-  "server": {
-    "url": "https://el-baul-de-los-jogos.vercel.app/",
-    "cleartext": false
+  "appName": "El Baúl de los Jogos",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 4000,
+      "launchFadeOutDuration": 200,
+      "backgroundColor": "#f5f4ed",
+      "showSpinner": false
+    }
   }
 }

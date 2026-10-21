@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const handleCors = require('./_cors');
 
 const genericError = { error: 'No se pudo iniciar sesión. Comprueba el apodo y la contraseña.' };
 const clientOptions = { auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false } };
@@ -10,6 +11,7 @@ function send(res, status, body) {
 }
 
 module.exports = async function signInWithNickname(req, res) {
+  if (handleCors(req, res)) return;
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return send(res, 405, { error: 'Método no permitido.' });

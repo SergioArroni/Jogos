@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const handleCors = require('./_cors');
 
 const ROOT_ADMIN_EMAIL = 'sergioadgi38@gmail.com';
 const clientOptions = {
@@ -11,6 +12,7 @@ function send(res, status, body) {
 }
 
 module.exports = async function adminUsers(req, res) {
+  if (handleCors(req, res)) return;
   if (req.method !== 'GET' && req.method !== 'PATCH') {
     res.setHeader('Allow', 'GET, PATCH');
     return send(res, 405, { error: 'Método no permitido.' });

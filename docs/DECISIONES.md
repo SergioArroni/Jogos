@@ -22,7 +22,7 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Consecuencias:** las reglas se aplican siempre, venga la petición de la web, de la APK o de un futuro servidor MCP. Hay que probarlas con varios usuarios (tests de integración).
 
 ## 3. App móvil con Capacitor
-**Estado:** Aceptada
+**Estado:** Sustituida por la 9
 
 - **Contexto:** se quería una APK sin mantener una segunda app.
 - **Decisión:** Capacitor envuelve la web en una app Android que carga la URL publicada en Vercel.
@@ -68,3 +68,11 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Decisión:** un servidor MCP en Rust (rmcp) que cada usuario conecta en su propio Claude o ChatGPT. Entra con su cuenta de la app (OAuth de Supabase), así que RLS sigue protegiendo los datos.
 - **Alternativas:** chat dentro de la app con una clave de API pagada por el dueño; que cada usuario ponga su propia clave de API.
 - **Consecuencias:** coste de modelos cero para el dueño. Depende de que los planes de Claude y ChatGPT permitan conectores. Antes de construirlo hay que probar con un prototipo que rmcp funciona en Vercel.
+
+## 9. Capacitor con la app empaquetada
+**Estado:** Aceptada, en `dev`. Sustituye a la 3.
+
+- **Contexto:** la APK solo abría la web publicada: sin Internet no funcionaba y se sentía como un acceso directo.
+- **Decisión:** la app compilada (`dist/`) va dentro de la APK, con funciones nativas de Capacitor (pantalla de inicio, barra de estado, botón atrás, vibración, menú de compartir) y diseño bajo la barra de estado (edge-to-edge). El código del móvil vive en una sola capa: `src/platform/`.
+- **Alternativas:** Tauri 2 (núcleo en Rust, menos rodado en móvil), Svelte Native (pantallas nativas, poco mantenido), PWA, React Native o una app nativa aparte (otro código distinto).
+- **Consecuencias:** arranca rápido y sin conexión muestra la última copia. Cada cambio necesita una APK nueva, que GitHub genera y prueba en un emulador. Las funciones de `api/` aceptan peticiones de la app (CORS). Lo que se edita sin conexión no se sube después.

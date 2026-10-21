@@ -3,6 +3,7 @@
   import Modal from '../components/Modal.svelte';
   import { deleteProposal, proposeGame, setCatan } from '../data/wishlist';
   import { safeHttpUrl } from '../domain/text';
+  import { tap } from '../platform/native';
   import type { WishlistGame } from '../domain/types';
   import { app } from '../stores/app.svelte';
   import { askConfirm } from '../stores/confirm.svelte';
@@ -92,7 +93,7 @@
           {#if game.notes}<p class="details">{game.notes}</p>{/if}
           <div class="cardfoot">
             {#if url}<a class="btn secondary" href={url} target="_blank" rel="noopener noreferrer">Ver ficha / tienda</a>{/if}
-            <button class="btn {voted ? 'secondary' : 'ghost'}" onclick={() => run(() => setCatan(game.id, app.user!.id, !voted))}>{voted ? '★ Ya tiene mi catán' : '☆ Dar un catán'}</button>
+            <button class="btn {voted ? 'secondary' : 'ghost'}" onclick={() => { tap(); run(() => setCatan(game.id, app.user!.id, !voted)); }}>{voted ? '★ Ya tiene mi catán' : '☆ Dar un catán'}</button>
             {#if game.user_id === app.user.id}<button class="btn ghost" onclick={() => remove(game)}>Quitar</button>{/if}
           </div>
         </article>
