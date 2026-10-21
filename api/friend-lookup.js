@@ -64,7 +64,7 @@ module.exports = async function friendLookup(req, res) {
     }
 
     const { data: profiles, error: profileError } = await adminClient
-      .from('profiles').select('user_id,nickname');
+      .from('profiles').select('user_id,nickname,created_at');
     if (profileError) throw profileError;
     const profileById = new Map(profiles.map(profile => [profile.user_id, profile]));
     for (const nickname of nicknames) {
@@ -77,7 +77,7 @@ module.exports = async function friendLookup(req, res) {
         const userId = idByQuery.get(query);
         const profile = userId && profileById.get(userId);
         return profile
-          ? { query, found: true, userId, nickname: profile.nickname, self: userId === caller.id }
+          ? { query, found: true, userId, nickname: profile.nickname, createdAt: profile.created_at, self: userId === caller.id }
           : { query, found: false };
       }),
     });
