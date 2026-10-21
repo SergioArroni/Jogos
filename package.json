@@ -6,7 +6,8 @@
     "android:add": "cap add android",
     "android:sync": "cap sync android",
     "android:open": "cap open android",
-    "android:apk": "npm run android:sync && cd android && gradlew assembleDebug"
+    "android:apk": "npm run android:sync && cd android && gradlew assembleDebug",
+    "android:icons": "capacitor-assets generate --android --iconBackgroundColor #245b45 --iconBackgroundColorDark #245b45"
   },
   "dependencies": {
     "@capacitor/android": "^8.0.0",
@@ -14,6 +15,7 @@
     "@supabase/supabase-js": "^2.118.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.0.0"
   }
 }
