@@ -1,10 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 const handleCors = require('./_cors');
-
-const ROOT_ADMIN_EMAIL = 'sergioadgi38@gmail.com';
-const clientOptions = {
-  auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
-};
+const { findAdmin, clientOptions } = require('./_admin');
 
 function send(res, status, body) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
@@ -18,25 +14,14 @@ module.exports = async function adminUsers(req, res) {
     return send(res, 405, { error: 'Método no permitido.' });
   }
 
-  const url = process.env.SUPABASE_URL;
-  const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY;
   const secretKey = process.env.SUPABASE_SECRET_KEY;
-  if (!url || !publishableKey || !secretKey) {
-    return send(res, 503, { error: 'Falta configurar el acceso seguro a Supabase en Vercel.' });
-  }
-
-  const token = (req.headers.authorization || '').match(/^Bearer\s+(.+)$/i)?.[1];
-  if (!token) return send(res, 401, { error: 'Inicia sesión para continuar.' });
+  if (!secretKey) return send(res, 503, { error: 'Falta configurar el acceso seguro a Supabase en Vercel.' });
 
   try {
-    const authClient = createClient(url, publishableKey, clientOptions);
-    const adminClient = createClient(url, secretKey, clientOptions);
-    const { data: authData, error: authError } = await authClient.auth.getUser(token);
-    const caller = authData?.user;
-    if (authError || !caller) return send(res, 401, { error: 'La sesión ha caducado. Vuelve a iniciar sesión.' });
-    if (caller.email?.toLowerCase() !== ROOT_ADMIN_EMAIL || caller.app_metadata?.ludoteca_admin !== true) {
-      return send(res, 403, { error: 'Esta cuenta no tiene permiso de administración.' });
-    }
+    const admin = await findAdmin(req);
+    if (admin.error) return send(res, admin.status, { error: admin.error });
+    const caller = admin.user;
+    const adminClient = createClient(process.env.SUPABASE_URL, secretKey, clientOptions);
 
     if (req.method === 'GET') {
       const users = [];

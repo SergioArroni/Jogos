@@ -9,6 +9,7 @@ Marca cada punto antes de pasar al siguiente bloque.
 - [ ] **GitHub → Actions:** el último commit de `dev` tiene en verde **Tests** y **Build Android APK** (los dos trabajos, *build* y *smoke-test*).
 - [ ] **Copia de seguridad** de la clave de firma (`Documentos/el-baul-firma-android`) guardada fuera del PC.
 - [ ] Si hay migraciones nuevas en `sql/`, ejecutadas en el SQL Editor de Supabase.
+- [ ] Si se publican las estadísticas por primera vez: **Analytics → Enable** en el proyecto de Vercel y la variable `VERCEL_ANALYTICS_TOKEN` creada (ver `README.md`).
 
 ## 2. Web de prueba (`https://el-baul-de-los-jogos-git-dev-deus20.vercel.app`)
 
@@ -22,7 +23,7 @@ Ojo: usa la **base de datos real**. Lo que crees aquí es de verdad; bórralo al
 - [ ] **Comunidad:** añadir un amigo por apodo; invitar a alguien nuevo (sale el enlace); compartir un grupo; si alguien te ha añadido, sale el aviso.
 - [ ] **Por comprar:** dar y quitar un catán.
 - [ ] **Perfil:** cambiar la foto y el apodo; probar los temas claro y oscuro.
-- [ ] **Administrar usuarios** (solo con tu cuenta de administrador): carga la lista.
+- [ ] **Administrar usuarios** (solo con tu cuenta de administrador): carga la lista y el bloque **Visitas** (en `dev` puede decir que aún no hay visitas: solo se cuenta producción).
 - [ ] Todo lo anterior también **en el navegador del móvil**.
 
 ## 3. APK de prueba (Actions → Build Android APK → último `dev` → `el-baul-de-los-jogos-dev-apk`)

@@ -9,6 +9,8 @@ import '@fontsource/dm-sans/800.css';
 import '@fontsource/fraunces/600.css';
 import '@fontsource/fraunces/700.css';
 import { createClient } from '@supabase/supabase-js';
+import { inject } from '@vercel/analytics';
+import { isNative } from './platform/native';
 
 declare global {
   interface Window {
@@ -17,3 +19,6 @@ declare global {
 }
 
 window.supabase = { createClient };
+
+// Count visits to these pages too (web only, like the app).
+if (!isNative) inject();

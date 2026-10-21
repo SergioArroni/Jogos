@@ -24,6 +24,16 @@ La web está publicada en Vercel: https://el-baul-de-los-jogos.vercel.app/. El r
 
 La página [`login.html`](login.html) permite crear una cuenta con correo, contraseña y apodo único, e iniciar sesión con el correo o el apodo. La página incluye recuperación de contraseña. Ejecuta [`sql/community-plays.sql`](sql/community-plays.sql) en el SQL Editor de Supabase para activar las fotos de perfil (incluye `profile-appearance.sql`), compartir grupos con amigos vinculados, los avisos de «te ha añadido como amigo», las partidas con notas por persona y el guardado incremental (solo se envían los cambios). Sin ese script la app sigue funcionando con el guardado antiguo. La pestaña Partidas organiza las partidas por grupo, con estadísticas, puntos, ganadores y la nota que cada participante pone desde su cuenta. La apariencia del tema se ajusta desde el menú de perfil y, por defecto, sigue el tema del dispositivo. La sección Amigos guarda contactos reutilizables en distintos grupos; cada grupo puede compartirse con una cuenta usando su correo. Si el nombre de un amigo coincide con el apodo de una cuenta, se vincula a ella; si no, la app ofrece un enlace de invitación al registro con un apodo propuesto y vincula al amigo cuando se registra con ese apodo (usa `/api/friend-lookup`). La página [`admin.html`](admin.html) permite al administrador revisar usuarios y suspender o restaurar cuentas. Cuando Supabase está conectado, la colección requiere iniciar sesión y se sincroniza por usuario. La clave antigua `anon` también es compatible. En modo local, abre `index.html?local=1`.
 
+## Estadísticas de visitas
+
+La página de administración muestra las visitas de los últimos 30 días (Vercel Web Analytics, solo la web de producción). Para activarlas:
+
+1. En Vercel, abre el proyecto y entra en **Analytics → Enable**.
+2. En **Account Settings → Tokens**, crea un token con acceso al equipo del proyecto y fecha de caducidad.
+3. En el proyecto, **Settings → Environment Variables**: añade `VERCEL_ANALYTICS_TOKEN` con ese token, marcado como **Sensitive**, para Production y Preview. Después, vuelve a desplegar.
+
+La función `api/analytics.js` usa ese token en el servidor; el navegador nunca lo ve.
+
 ## Desarrollo
 
 La app está hecha con Vite + TypeScript + Svelte (`src/`). Lee [`docs/ARQUITECTURA.md`](docs/ARQUITECTURA.md) para entender las capas, las ramas (`dev` → `main`) y los tests, y [`docs/DECISIONES.md`](docs/DECISIONES.md) para saber por qué se eligió cada cosa.

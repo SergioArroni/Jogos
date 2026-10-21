@@ -85,3 +85,11 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Alternativas:** seguir con APK de depuración; dejar que Google Play firme la app (Play App Signing).
 - **Consecuencias:** las actualizaciones se instalan encima y la app queda lista para publicarse en Google Play. **Si la clave se pierde, la app ya no se puede actualizar**: la copia de seguridad es obligatoria.
 
+## 11. Estadísticas de visitas con Vercel Web Analytics
+**Estado:** Aceptada, en `dev`
+
+- **Contexto:** se quería saber si la app se usa, y verlo dentro de la página de administración.
+- **Decisión:** Vercel Web Analytics cuenta las visitas de la web (sin cookies ni datos personales). La función `api/analytics.js` las lee con un token de Vercel que solo vive en el servidor, comprueba que quien pregunta es el administrador (`api/_admin.js`, compartido con `api/admin-users.js`) y la página de admin las dibuja.
+- **Alternativas:** mirarlas solo en el panel de Vercel; contar visitas en una tabla propia de Supabase (contaría también la APK, pero es más código y datos que guardar).
+- **Consecuencias:** gratis hasta 50.000 visitas al mes y con 1 mes de historial (plan Hobby). La APK no se cuenta. Sin eventos personalizados en este plan, no se sabe qué sección se usa más. El token de Vercel da acceso a la cuenta, así que debe caducar y guardarse como variable sensible.
+

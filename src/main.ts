@@ -6,12 +6,18 @@ import '@fontsource/dm-sans/700.css';
 import '@fontsource/dm-sans/800.css';
 import '@fontsource/fraunces/600.css';
 import '@fontsource/fraunces/700.css';
+import { inject } from '@vercel/analytics';
 import { mount } from 'svelte';
 import App from './App.svelte';
 import { app } from './stores/app.svelte';
+import { isNative } from './platform/native';
 import { theme } from './stores/theme.svelte';
 
 theme.apply();
+
+// Vercel Web Analytics counts visits to the web (cookieless, no personal data). Not inside the APK:
+// there the app runs on https://localhost and Vercel could not tell which site the visit belongs to.
+if (!isNative) inject();
 
 // The loading screen (in index.html) stays until we know whether there is a session.
 const slowTimer = setTimeout(() => {
