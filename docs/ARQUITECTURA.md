@@ -14,6 +14,10 @@
                               administrar usuarios, entrar con apodo, buscar cuentas.
 ```
 
+Además, `mcp/` (Rust, rmcp) es el servidor MCP que se publica como la función `/api/mcp`:
+Claude o ChatGPT lo llaman con el token del usuario y él consulta Supabase con ese token,
+así que las mismas reglas RLS deciden qué ve cada uno.
+
 La seguridad vive en la base de datos (políticas RLS en `sql/`). El frontend nunca
 tiene la clave secreta: aunque alguien manipule el JavaScript, Postgres decide.
 

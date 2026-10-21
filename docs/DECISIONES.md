@@ -62,7 +62,7 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Consecuencias:** los cambios se publican con confianza. Los de integración necesitan Docker y tardan más.
 
 ## 8. Asistente de IA mediante MCP
-**Estado:** Aceptada, pendiente de implementar
+**Estado:** Aceptada. Prototipo (fase 1) hecho en `dev`: servidor rmcp en `mcp/` con `list_games` y `who_am_i`; falta el login OAuth (fase 2)
 
 - **Contexto:** se quiere hablar con la app desde Claude o ChatGPT sin pagar el uso de los modelos.
 - **Decisión:** un servidor MCP en Rust (rmcp) que cada usuario conecta en su propio Claude o ChatGPT. Entra con su cuenta de la app (OAuth de Supabase), así que RLS sigue protegiendo los datos.

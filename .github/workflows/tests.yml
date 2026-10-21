@@ -37,8 +37,17 @@ jobs:
       # Uses the Google Chrome already installed on GitHub's Ubuntu runners.
       - run: npx playwright test --project=local --project=local-mobile
 
+  mcp:
+    name: MCP server (Rust)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test
+
   integration:
-    name: Integration tests (Postgres + PostgREST in Docker)
+    name: Integration tests (Postgres + PostgREST in Docker, MCP server)
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
@@ -46,5 +55,6 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: Swatinem/rust-cache@v2
       - run: npm ci
       - run: npm run test:integration
