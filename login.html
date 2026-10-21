@@ -5,7 +5,6 @@
 <title>Entrar · El Baul de los Jogos</title>
 <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="/brand/icon-192.png"><link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
 <script>const savedTheme=localStorage.getItem('el-baul-theme')||'system';if(savedTheme!=='system')document.documentElement.dataset.theme=savedTheme</script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <style>
 :root{color-scheme:light;--bg:#f5f4ed;--paper:#fffefa;--ink:#1d2923;--muted:#68756c;--line:#e2e4da;--green:#245b45;--green2:#dfece2;--field:#fffefa;--shadow:0 24px 70px #18251d14}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#111914;--paper:#19231d;--ink:#f1f3ed;--muted:#a9b4aa;--line:#2d3a32;--green:#85b99a;--green2:#243a2d;--field:#19231d;--shadow:0 24px 70px #0004}}
@@ -22,8 +21,8 @@
 <form id="form"><div class="field" id="nicknameField" hidden><label for="nickname">Apodo único</label><input id="nickname" minlength="3" maxlength="24" pattern="[A-Za-z0-9_.-]{3,24}" autocomplete="nickname" placeholder="Ej. su_morenito_19"><small>De 3 a 24 letras, números, puntos, guiones o guiones bajos.</small></div><div class="field" id="identityField"><label for="email" id="identityLabel">Correo o apodo</label><input id="email" type="text" autocomplete="username" placeholder="tu@correo.com o tu_apodo" required><small id="identityHint">Usa el correo o el apodo de tu cuenta.</small></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" minlength="6" placeholder="Tu contraseña" required></div><button class="forgot" id="forgot" type="button">¿Olvidaste tu contraseña?</button><button class="submit" id="submit" type="submit">Entrar en mi colección</button></form>
 <div class="toggle"><span id="toggleText">¿Todavía no tienes cuenta?</span> <button class="linkbutton" id="toggle" type="button">Crear una</button></div><p class="message" id="message" role="status" aria-live="polite"></p>
 </div></section></div></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/supabase-config.js"></script>
-<script>
+<script src="/supabase-config.js"></script><script type="module" src="/src/static-pages.ts"></script>
+<script type="module">
 const WEB=window.Capacitor?.isNativePlatform?.()?'https://el-baul-de-los-jogos.vercel.app/':location.href;
 window.Capacitor?.Plugins?.SplashScreen?.hide?.({fadeOutDuration:200});
 const $=id=>document.getElementById(id);const cfg=window.LUDOTECA_SUPABASE||{};const key=cfg.publishableKey||cfg.anonKey;const configured=!!(window.supabase?.createClient&&cfg.url&&key&&!key.includes('TU_'));const client=configured?window.supabase.createClient(cfg.url,key):null;let mode='signin';
