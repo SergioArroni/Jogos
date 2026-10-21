@@ -56,7 +56,7 @@ proyecto de Supabase para pruebas.
 
 GitHub Actions (`.github/workflows/tests.yml`) ejecuta todo en cada push a `dev` y `main`.
 
-Las decisiones importantes y su porqué están en [`DECISIONES.md`](DECISIONES.md).
+Las decisiones importantes y su porqué están en [`DECISIONES.md`](DECISIONES.md), y los pasos para publicar en [`PUBLICAR.md`](PUBLICAR.md).
 
 ## Desarrollo
 
