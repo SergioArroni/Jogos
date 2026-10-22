@@ -57,3 +57,14 @@ pierdes, rachas, con quién juegas más, etc.
 - Datos: ya están (partidas, ganadores, notas, puntos).
 - Decidir: qué ve cada uno del perfil de otro.
 - Tamaño: mediano. Mucha lógica pura en `domain/` (fácil de testear).
+
+### 6. Tiempo real de partida frente al teórico
+Al registrar una partida, que sea obligatorio poner cuánto duró. En la ficha del juego, junto al
+título, mostrar la mediana del tiempo real frente al de la caja (p. ej. «⏱ 30 min · real 45 min»).
+- Datos: hoy no se guarda la duración de las partidas. Hace falta una columna nueva en `plays`
+  (migración SQL a mano en Supabase) y el campo en el formulario de partida.
+- Las partidas antiguas no tienen tiempo: se ignoran al calcular la mediana.
+- Mediana y no media: una partida eterna (o un error al escribir 600 en vez de 60) no la deforma.
+- Decidir: desde cuántas partidas se muestra (con una sola no dice mucho) y si es la mediana tuya,
+  la del grupo o la de todos.
+- Tamaño: pequeño-mediano.
