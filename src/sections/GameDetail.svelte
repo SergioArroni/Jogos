@@ -27,7 +27,7 @@
     `👥 ${game.players || 'Jugadores por confirmar'}`,
     game.duration ? `⏱ ${game.duration} min` : '⏱ Duración por confirmar',
     game.weight ? `Dureza ${game.weight}/5` : 'Dureza por confirmar',
-    `📍 ${game.location || 'Lugar por asignar'}`,
+    `📍 ${game.locations.join(' · ') || 'Lugar por asignar'}`,
   ] : []);
 </script>
 

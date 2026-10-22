@@ -8,7 +8,8 @@ export interface Game {
   types: string[];
   weight: number | null;
   duration: number | null;
-  location: string;
+  /** Places with a copy of the game: it can be in several houses. */
+  locations: string[];
   notes: string;
 }
 

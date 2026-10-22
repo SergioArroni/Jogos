@@ -8,7 +8,9 @@
   /** `game` undefined → new game. */
   let { open, game, onclose }: { open: boolean; game?: Game; onclose: () => void } = $props();
 
-  let form = $state({ name: '', players: '', types: '', weight: '', duration: '', location: '', notes: '' });
+  let form = $state({ name: '', players: '', types: '', weight: '', duration: '', locations: [] as string[], notes: '' });
+  /** The user's places, plus any the game already had that no longer exists (so it can be unticked). */
+  const placeNames = $derived([...new Set([...app.places.map(place => place.name), ...(game?.locations ?? [])])]);
   let status = $state('');
 
   $effect(() => {
@@ -19,8 +21,8 @@
     status = '';
     form = game
       ? { name: game.name, players: game.players ?? '', types: game.types.join(', '), weight: String(game.weight ?? ''),
-          duration: String(game.duration ?? ''), location: game.location ?? '', notes: game.notes ?? '' }
-      : { name: '', players: '', types: '', weight: '', duration: '', location: app.places[0]?.name ?? '', notes: '' };
+          duration: String(game.duration ?? ''), locations: [...game.locations], notes: game.notes ?? '' }
+      : { name: '', players: '', types: '', weight: '', duration: '', locations: app.places.slice(0, 1).map(place => place.name), notes: '' };
   }
 
   function submit(event: SubmitEvent) {
@@ -32,7 +34,7 @@
       types: form.types.split(',').map(type => type.trim()).filter(Boolean),
       weight: Number(form.weight) || null,
       duration: Number(form.duration) || null,
-      location: form.location,
+      locations: placeNames.filter(name => form.locations.includes(name)),
       notes: form.notes.trim(),
     };
     if (app.games.some(g => g.id !== saved.id && nameKey(g.name) === nameKey(saved.name))) {
@@ -58,12 +60,15 @@
         </select>
       </div>
       <div class="field"><label for="gDuration">Duración en minutos</label><input id="gDuration" type="number" min="1" max="600" placeholder="Ej. 30" bind:value={form.duration} /></div>
-      <div class="field">
-        <label for="gLocation">Lugar</label>
-        <select id="gLocation" bind:value={form.location}>
-          <option value="">Sin asignar</option>
-          {#each app.places as place (place.id)}<option value={place.name}>{place.name}</option>{/each}
-        </select>
+      <div class="field full">
+        <span class="field-label">Lugares (puede estar en varios)</span>
+        <div class="friend-picker" role="group" aria-label="Lugares donde está el juego">
+          {#each placeNames as place (place)}
+            <label class="friend-option"><input type="checkbox" value={place} bind:group={form.locations} /><span>{place}</span></label>
+          {:else}
+            <p class="notice">Añade lugares en «Gestionar lugares» para elegirlos aquí.</p>
+          {/each}
+        </div>
       </div>
       <div class="field full"><label for="gNotes">Notas / expansiones / grupo ideal</label><textarea id="gNotes" placeholder="Ej. expansión de…, ideal para…" bind:value={form.notes}></textarea></div>
     </div>

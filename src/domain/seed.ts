@@ -55,10 +55,22 @@ export const INITIAL_PLACES: Place[] = [
 ];
 
 /** Old saves used "home"/"away" instead of a place name. */
-export const normalizeGamePlace = (game: Game): Game => ({
-  ...game,
-  location: game.location === 'home' ? 'Casa Sergio' : game.location === 'away' ? '' : game.location || '',
-});
+/** A game as saved: older saves have a single `location` instead of `locations`. */
+export type StoredGame = Omit<Game, 'locations'> & { locations?: string[]; location?: string };
+
+/** The first versions saved place codes instead of names. */
+const placeName = (name: string): string => (name === 'home' ? 'Casa Sergio' : name === 'away' ? '' : name.trim());
+
+/** Brings a saved game to the current shape: a list of places, without repeats or blanks. */
+export function normalizeGamePlace(game: StoredGame): Game {
+  const { location, locations, ...rest } = game;
+  const names = Array.isArray(locations) ? locations : location ? [location] : [];
+  return { ...rest, locations: [...new Set(names.map(placeName).filter(Boolean))] };
+}
+
+/** True when the saved game had the old shape, so the collection should be saved again. */
+export const needsPlaceMigration = (stored: StoredGame, game: Game): boolean =>
+  'location' in stored || JSON.stringify(stored.locations) !== JSON.stringify(game.locations);
 
 export const seedGames = (): Game[] =>
   INITIAL_GAMES.map(([name, players, types, weight, duration, location, notes], index) =>

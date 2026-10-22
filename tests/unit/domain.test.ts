@@ -4,14 +4,14 @@ import { buildShelves, filterGames, noFilters, topTypes } from '../../src/domain
 import { groupKey, groupMembers, groupWithMembers, playGroupKey, splitGroupKey } from '../../src/domain/groups';
 import { maxPlayers, playerRange, supports } from '../../src/domain/players';
 import { recommend } from '../../src/domain/recommend';
-import { normalizeGamePlace, seedGames, withDefaultPlaces } from '../../src/domain/seed';
+import { needsPlaceMigration, normalizeGamePlace, seedGames, withDefaultPlaces } from '../../src/domain/seed';
 import { playStats } from '../../src/domain/stats';
 import { diffRows, snapshotOf } from '../../src/domain/sync';
 import { isValidNickname, localToday, nameKey, nicknameSuggestion, safeHttpUrl, withSuffix } from '../../src/domain/text';
 import type { Friend, Game, Group, Play } from '../../src/domain/types';
 
 const game = (over: Partial<Game> = {}): Game => ({
-  id: 'g', name: 'Juego', players: '2–4', types: [], weight: 2, duration: 30, location: '', notes: '', ...over,
+  id: 'g', name: 'Juego', players: '2–4', types: [], weight: 2, duration: 30, locations: [], notes: '', ...over,
 });
 
 const play = (over: Partial<Play> = {}): Play => ({
@@ -113,15 +113,15 @@ describe('groups', () => {
 describe('catalog', () => {
   const games = [
     game({ id: '1', name: 'Zombis', types: ['Fiesta'], players: '3–10', duration: 20 }),
-    game({ id: '2', name: 'Agricola', types: ['Estrategia'], weight: 5, duration: 120, location: 'Casa Lu' }),
-    game({ id: '3', name: 'Burrito', types: ['Fiesta'], players: '2–6', duration: 15 }),
+    game({ id: '2', name: 'Agricola', types: ['Estrategia'], weight: 5, duration: 120, locations: ['Casa Lu'] }),
+    game({ id: '3', name: 'Burrito', types: ['Fiesta'], players: '2–6', duration: 15, locations: ['Casa Enzo', 'Casa Lu'] }),
     game({ id: '4', name: 'Diplomacy', types: ['Estrategia'], weight: 5, players: '2–7', duration: 360 }),
   ];
   it('filters by search, style, players and place, sorted by name', () => {
     expect(filterGames(games, { search: '', type: 'Fiesta', players: 0, place: '' }).map(g => g.name)).toEqual(['Burrito', 'Zombis']);
     expect(filterGames(games, { search: 'agri', type: '', players: 0, place: '' })).toHaveLength(1);
     expect(filterGames(games, { search: '', type: '', players: 8, place: '' }).map(g => g.name)).toEqual(['Zombis']);
-    expect(filterGames(games, { search: '', type: '', players: 0, place: 'Casa Lu' }).map(g => g.id)).toEqual(['2']);
+    expect(filterGames(games, { search: '', type: '', players: 0, place: 'Casa Lu' }).map(g => g.id)).toEqual(['2', '3']);
     expect(noFilters({ search: '  ', type: '', players: 0, place: '' })).toBe(true);
   });
   it('lists the most common styles first', () => {
@@ -170,9 +170,29 @@ describe('sync', () => {
 });
 
 describe('seed', () => {
-  it('maps old place codes and keeps default places without duplicates', () => {
-    expect(normalizeGamePlace(game({ location: 'home' })).location).toBe('Casa Sergio');
-    expect(normalizeGamePlace(game({ location: 'away' })).location).toBe('');
+  it('turns old saves with one place (or a place code) into a list of places', () => {
+    const { locations: _, ...old } = game();
+    expect(normalizeGamePlace({ ...old, location: 'Casa Enzo' }).locations).toEqual(['Casa Enzo']);
+    expect(normalizeGamePlace({ ...old, location: 'home' }).locations).toEqual(['Casa Sergio']);
+    expect(normalizeGamePlace({ ...old, location: 'away' }).locations).toEqual([]);
+    expect(normalizeGamePlace({ ...old, location: '' }).locations).toEqual([]);
+    expect(normalizeGamePlace(old).locations).toEqual([]);
+    expect('location' in normalizeGamePlace({ ...old, location: 'Casa Lu' })).toBe(false);
+  });
+
+  it('keeps several places without repeats or blanks', () => {
+    expect(normalizeGamePlace(game({ locations: ['Casa Enzo', ' Casa Lu ', 'Casa Enzo', ''] })).locations).toEqual(['Casa Enzo', 'Casa Lu']);
+  });
+
+  it('only asks to save again when the stored shape changed', () => {
+    const { locations: _, ...old } = game();
+    const legacy = { ...old, location: 'Casa Lu' };
+    expect(needsPlaceMigration(legacy, normalizeGamePlace(legacy))).toBe(true);
+    const current = game({ locations: ['Casa Lu'] });
+    expect(needsPlaceMigration(current, normalizeGamePlace(current))).toBe(false);
+  });
+
+  it('keeps default places without duplicates', () => {
     expect(seedGames()).toHaveLength(42);
     expect(withDefaultPlaces([{ id: 'x', name: 'casa lu' }]).map(p => p.name)).toHaveLength(5);
     expect(withDefaultPlaces([])).toHaveLength(5);

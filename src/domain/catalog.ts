@@ -22,7 +22,7 @@ export function filterGames(games: Game[], filters: CatalogFilters): Game[] {
       (game.name + ' ' + game.types.join(' ') + ' ' + game.notes).toLowerCase().includes(search) &&
       (!filters.type || game.types.includes(filters.type)) &&
       supports(game, filters.players) &&
-      (!filters.place || game.location === filters.place))
+      (!filters.place || game.locations.includes(filters.place)))
     .sort(byName);
 }
 

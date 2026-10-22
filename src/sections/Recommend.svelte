@@ -88,7 +88,7 @@
               </div>
               <div class="tags">{#each game.types as type (type)}<span class="tag">{type}</span>{/each}</div>
               {#if groupNote}<span class="reco-note">{groupNote}</span>{/if}
-              <p class="details">📍 {game.location || 'Lugar por asignar'}</p>
+              <p class="details">📍 {game.locations.join(' · ') || 'Lugar por asignar'}</p>
               <button class="btn secondary" onclick={() => onedit(game.id)}>Ver / editar ficha</button>
             </article>
           {/each}

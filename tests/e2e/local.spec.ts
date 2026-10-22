@@ -127,3 +127,20 @@ test('simple games have drawn covers and explain how to play', async ({ page }) 
   await expect(page.getByRole('heading', { name: 'Cómo se juega' })).toBeVisible();
   await expect(page.getByText('Ronda 2: solo una palabra por carta.', { exact: false })).toBeVisible();
 });
+
+test('a game can be in several places at once', async ({ page }) => {
+  await page.getByLabel('Buscar en la colección').fill('carcassonne');
+  await covers(page).first().click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Editar' }).click();
+  const places = page.getByRole('group', { name: 'Lugares donde está el juego' });
+  await expect(places.getByRole('checkbox', { name: 'Casa Sergio' })).toBeChecked();
+  await places.getByRole('checkbox', { name: 'Casa Lu' }).check();
+  await page.getByRole('button', { name: 'Guardar juego' }).click();
+
+  await covers(page).first().click();
+  await expect(page.getByRole('dialog')).toContainText('📍 Casa Sergio · Casa Lu');
+  await page.getByRole('dialog').getByRole('button', { name: 'Cerrar' }).click();
+  await page.getByLabel('Buscar en la colección').fill('');
+  await page.getByLabel('Filtrar lugar').selectOption('Casa Lu');
+  await expect(covers(page).filter({ hasText: 'Carcassonne' })).toHaveCount(1);
+});

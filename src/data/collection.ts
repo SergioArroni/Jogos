@@ -1,6 +1,6 @@
 import type { User } from '@supabase/supabase-js';
 import { groupWithMembers } from '../domain/groups';
-import { normalizeGamePlace, withDefaultPlaces } from '../domain/seed';
+import { needsPlaceMigration, normalizeGamePlace, withDefaultPlaces } from '../domain/seed';
 import { diffRows, snapshotOf, type Snapshot } from '../domain/sync';
 import type { Group } from '../domain/types';
 import { requireClient } from './client';
@@ -60,7 +60,7 @@ export class CloudSync {
     const normalized = raw.games.map(normalizeGamePlace);
     const placesWithDefaults = withDefaultPlaces(raw.places);
     const migrated = !empty && (
-      normalized.some((game, i) => game.location !== raw.games[i].location) || placesWithDefaults.length !== raw.places.length);
+      normalized.some((game, i) => needsPlaceMigration(raw.games[i], game)) || placesWithDefaults.length !== raw.places.length);
 
     const shares = [...(sharedByEmail.data ?? []), ...(sharedById.error ? [] : sharedById.data ?? [])];
     const shared = await loadSharedGroups(shares);

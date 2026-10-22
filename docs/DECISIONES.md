@@ -101,3 +101,11 @@ Cuando una decisión cambie, no se borra: se marca como **Sustituida** y se aña
 - **Decisión:** una biblioteca común (`src/content/library.ts`, con los juegos repartidos en tres archivos por dureza) guarda, para cada juego, su portada y un resumen de cómo se juega. Se busca por nombre (sin tildes, mayúsculas ni lo que va entre paréntesis), así que sirve para cualquier colección. Las portadas son ilustraciones vectoriales propias (`public/covers/`, generadas con `scripts/covers.mjs` y `scripts/covers/`), sin texto, porque la app pone el título encima. Si no hay reglas fiables de un juego, no se inventan: se avisa de que hay que mirar la caja.
 - **Alternativas:** guardar portada y reglas en Supabase (cada uno con las suyas: más tablas y nadie las rellenaría); usar fotos de las cajas o de BoardGameGeek (derechos de autor y tamaños desiguales); que cada usuario suba su foto (Supabase Storage y moderación).
 - **Consecuencias:** van con la app, así que funcionan sin conexión y en la APK, y no ocupan base de datos. Añadir un juego o corregir unas reglas requiere un cambio de código y publicar. Un juego con un nombre que la biblioteca no conoce se queda con el emoji.
+
+## 13. Un juego puede estar en varios lugares
+**Estado:** Aceptada, en `dev`
+
+- **Contexto:** hay juegos repetidos en varias casas (por ejemplo, Virus en Casa Enzo y en Casa Lu), y cada juego solo tenía un lugar.
+- **Decisión:** el juego guarda una lista de lugares (`locations`) en vez de uno (`location`). Como cada juego se guarda como JSON en Supabase, no hace falta SQL: al cargar, `normalizeGamePlace` convierte el formato antiguo y la app vuelve a guardar la colección. El MCP usa la misma función.
+- **Alternativas:** un juego repetido por cada casa (dos fichas, con notas y estadísticas duplicadas); una tabla aparte de «copias» con su lugar (más correcta si algún día cada copia tiene su estado o su edición, pero mucho más trabajo ahora).
+- **Consecuencias:** filtros, recomendaciones y el recuento de lugares miran si el lugar está en la lista. Una versión antigua de la app (la de producción hasta publicar) no entiende la lista y mostraría esos juegos como «Lugar por asignar».

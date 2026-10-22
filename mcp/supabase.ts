@@ -1,8 +1,8 @@
 // The production BaulData port: reads Supabase *as the caller* (their token goes in
 // every request), so RLS returns exactly what they may see — the same as in the app.
 import { createClient } from '@supabase/supabase-js';
-import { normalizeGamePlace } from '../src/domain/seed';
-import type { Friend, Game, Group, Play } from '../src/domain/types';
+import { normalizeGamePlace, type StoredGame } from '../src/domain/seed';
+import type { Friend, Group, Play } from '../src/domain/types';
 import { BaulError, type Account, type BaulData } from './server';
 
 // Public values (the same ones the web app ships); env vars can override them.
@@ -10,9 +10,9 @@ const DEFAULT_URL = 'https://ibllpkczcsjxqzszwiby.supabase.co';
 const DEFAULT_KEY = 'sb_publishable_Q1uBq8AgBRhSLRfYIqW7lA_zhwj6KeR';
 
 /** Stored games may miss fields (old saves, hand-made rows); give the domain logic complete objects. */
-const completeGame = (data: Partial<Game>): Game => normalizeGamePlace({
+const completeGame = (data: Partial<StoredGame>) => normalizeGamePlace({
   id: data.id ?? '', name: data.name ?? '', players: data.players ?? '', types: Array.isArray(data.types) ? data.types : [],
-  weight: data.weight ?? null, duration: data.duration ?? null, location: data.location ?? '', notes: data.notes ?? '',
+  weight: data.weight ?? null, duration: data.duration ?? null, location: data.location, locations: data.locations, notes: data.notes ?? '',
 });
 
 const SESSION_EXPIRED = 'Tu sesión de El Baúl no es válida o ha caducado. Vuelve a conectar la cuenta.';

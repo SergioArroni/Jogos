@@ -37,7 +37,7 @@ export function recommend(games: Game[], options: RecommendOptions): Recommendat
       if (mood && game.types.includes(mood)) score += 5;
       if (weight && game.weight) score += Math.max(0, 4 - Math.abs(game.weight - weight));
       if (duration && game.duration) score += game.duration <= duration ? 2 : -3;
-      if (place && game.location !== place) score -= 20;
+      if (place && !game.locations.includes(place)) score -= 20;
       if (likes.length && game.types.some(type => likes.includes(type.toLowerCase()))) score += 3;
       const groupNote = !group ? ''
         : avg != null ? `Nota del grupo: ${formatDecimal(avg)}/10`

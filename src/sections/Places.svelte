@@ -35,7 +35,7 @@
       <thead><tr><th>Lugar</th><th>Juegos guardados</th></tr></thead>
       <tbody>
         {#each app.places as place (place.id)}
-          <tr><td><strong>📍 {place.name}</strong></td><td>{app.games.filter(game => game.location === place.name).length}</td></tr>
+          <tr><td><strong>📍 {place.name}</strong></td><td>{app.games.filter(game => game.locations.includes(place.name)).length}</td></tr>
         {:else}
           <tr><td colspan="2">Todavía no hay lugares.</td></tr>
         {/each}

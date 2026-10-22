@@ -5,7 +5,7 @@ import type { Game, Group, Play } from '../../src/domain/types';
 // The whole MCP endpoint with a fake data port: real protocol messages, no network.
 const ME = { id: 'me', email: 'yo@x.com', nickname: 'sergio' };
 const game = (name: string, over: Partial<Game> = {}): Game =>
-  ({ id: name, name, players: '2–5', types: [], weight: 2, duration: 30, location: '', notes: '', ...over });
+  ({ id: name, name, players: '2–5', types: [], weight: 2, duration: 30, locations: [], notes: '', ...over });
 const GAMES = [
   game('Catan', { players: '3–4', types: ['Estrategia'], duration: 90 }),
   game('Dixit', { players: '3–8', types: ['Fiesta'] }),
