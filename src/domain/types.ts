@@ -84,8 +84,12 @@ export interface WishlistGame {
   players: string | null;
   duration: string | null;
   notes: string | null;
+  /** How much the proposer feels like playing it. Missing before sql/wishlist-hype.sql. */
+  hype?: WishlistHype | null;
   created_at: string;
 }
+
+export type WishlistHype = 'culo' | 'le-daba' | 'y-si-si';
 
 export interface WishlistVote {
   game_id: string;

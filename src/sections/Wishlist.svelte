@@ -4,15 +4,17 @@
   import { deleteProposal, proposeGame, setCatan } from '../data/wishlist';
   import { safeHttpUrl } from '../domain/text';
   import { tap } from '../platform/native';
-  import type { WishlistGame } from '../domain/types';
+  import type { WishlistGame, WishlistHype } from '../domain/types';
   import { app } from '../stores/app.svelte';
   import { askConfirm } from '../stores/confirm.svelte';
 
   let status = $state('');
   let open = $state(false);
   let formStatus = $state('');
-  const empty = { title: '', url: '', price: '', publisher: '', players: '', duration: '', description: '', notes: '' };
+  const empty = { title: '', url: '', hype: '' as WishlistHype | '', price: '', publisher: '', players: '', duration: '', description: '', notes: '' };
   let form = $state({ ...empty });
+
+  const HYPE: Record<WishlistHype, string> = { culo: 'Me lo meto por el culo', 'le-daba': 'Yo le daba', 'y-si-si': '¿Y si sí?' };
 
   const euros = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
   /** Most catanes first, then newest. */
@@ -41,11 +43,12 @@
   async function submit(event: SubmitEvent) {
     event.preventDefault();
     const url = safeHttpUrl(form.url.trim());
-    if (!url) return void (formStatus = 'Introduce un enlace http o https válido.');
+    if (form.url.trim() && !url) return void (formStatus = 'Introduce un enlace http o https válido, o déjalo vacío.');
+    if (!form.hype) return void (formStatus = 'Elige tus ganas de jogo.');
     formStatus = 'Guardando propuesta…';
     try {
       await proposeGame({
-        user_id: app.user!.id, title: form.title.trim(), url, description: form.description.trim(),
+        user_id: app.user!.id, title: form.title.trim(), url, hype: form.hype, description: form.description.trim(),
         price: form.price ? Number(form.price) : null, publisher: form.publisher.trim() || null,
         players: form.players.trim() || null, duration: form.duration.trim() || null, notes: form.notes.trim() || null,
       });
@@ -83,6 +86,7 @@
           {#if game.description}<p class="details">{game.description}</p>{/if}
           <div class="tags">
             <span class="tag green">{game.price == null ? 'Precio por confirmar' : euros.format(game.price)}</span>
+            {#if game.hype && HYPE[game.hype]}<span class="tag">Ganas: {HYPE[game.hype]}</span>{/if}
             <span class="tag">{voters.length} {voters.length === 1 ? 'catán' : 'catanes'}</span>
             {#if voters.length}
               <span class="voters" title={voters.map(voterName).join(', ')}>
@@ -108,7 +112,8 @@
   <form onsubmit={submit}>
     <div class="formgrid">
       <div class="field full"><label for="wishTitle">Nombre del juego *</label><input id="wishTitle" required maxlength="120" bind:value={form.title} /></div>
-      <div class="field full"><label for="wishUrl">Enlace a la tienda o ficha *</label><input id="wishUrl" type="url" required placeholder="https://…" bind:value={form.url} /></div>
+      <div class="field full"><label for="wishUrl">Enlace a la tienda o ficha</label><input id="wishUrl" type="url" placeholder="https://…" bind:value={form.url} /></div>
+      <div class="field full"><label for="wishHype">Ganas de jogo *</label><select id="wishHype" required bind:value={form.hype}><option value="" disabled>Elige…</option>{#each Object.entries(HYPE) as [value, label] (value)}<option {value}>{label}</option>{/each}</select></div>
       <div class="field"><label for="wishPrice">Precio aproximado (€)</label><input id="wishPrice" type="number" min="0" step="0.01" placeholder="Ej. 39,95" bind:value={form.price} /></div>
       <div class="field"><label for="wishPublisher">Editorial</label><input id="wishPublisher" maxlength="100" bind:value={form.publisher} /></div>
       <div class="field"><label for="wishPlayers">Jugadores</label><input id="wishPlayers" maxlength="40" placeholder="Ej. 2–4" bind:value={form.players} /></div>

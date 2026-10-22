@@ -15,7 +15,13 @@ export async function loadWishlist(): Promise<{ games: WishlistGame[]; votes: Wi
 export type WishlistDraft = Omit<WishlistGame, 'id' | 'created_at'>;
 
 export async function proposeGame(game: WishlistDraft): Promise<void> {
-  const { error } = await requireClient().from('wishlist_games').insert(game);
+  const db = requireClient();
+  let { error } = await db.from('wishlist_games').insert(game);
+  // PGRST204: the hype column doesn't exist yet (sql/wishlist-hype.sql not run), so save without it.
+  if (error?.code === 'PGRST204' && 'hype' in game) {
+    const { hype: _, ...rest } = game;
+    ({ error } = await db.from('wishlist_games').insert(rest));
+  }
   if (error) throw error;
 }
 
