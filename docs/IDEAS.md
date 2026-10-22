@@ -35,13 +35,21 @@ Mejorar «Qué jugamos» usando el historial de puntuaciones, tuyo y del grupo.
 - Decidir: si se calcula en el navegador o en el servidor, y cómo explicar al usuario «por qué te lo recomiendo».
 - Tamaño: mediano-grande. Buena para aprender: empezar simple, medir y mejorar.
 
-### 3. Buscar juegos nuevos con BoardGameGeek
-Buscar juegos que no tienes (por nombre, estilo, número de jugadores…) con datos de BGG, y
-añadirlos a «Por comprar».
-- BGG tiene una API XML pública; puede pedir registro o token y tiene límites de uso.
-  Hay que llamarla desde una función de `api/` (no desde el navegador) y guardar en caché.
-- Decidir: qué datos guardamos y cómo respetamos sus condiciones de uso.
-- Tamaño: mediano.
+### 3. Catálogo de juegos tipo BGG: escribir el nombre y que se rellene la ficha
+Al añadir un juego (o proponerlo en «Por comprar»), escribes el nombre, te sugiere juegos y al
+elegir uno se rellena todo: jugadores, duración, dureza, estilos, año, foto. Sirve también para
+buscar juegos nuevos.
+- Fuente propuesta: la XML API de BoardGameGeek. Desde 2025 exige registrar una aplicación
+  (gratis si no es comercial, aprobación de una semana o más) y un token que solo vive en el servidor.
+  Condiciones: uso no comercial, citar a BGG con el logo «Powered by BGG», no alterar sus datos,
+  pocas peticiones. Las fotos son de las editoriales: enlazarlas, no copiarlas.
+- Índice: tabla en Supabase que guarda cada juego consultado (caché), para no repetir peticiones a
+  BGG y que con el tiempo haya «muchos juegos indexados». Opcional: cargar de golpe la lista de
+  nombres e ids de BGG (su CSV de rankings) para sugerir al instante.
+- Descartado como fuente principal: Wikidata (libre, pero solo ~4.500 juegos, ~400 con nombre en
+  español y ~1.800 con número de jugadores; comprobado el 2026-10-23).
+- Lo nuestro (portadas dibujadas y «Cómo se juega») se sigue usando cuando existe.
+- Tamaño: mediano-grande. Bloqueado hasta que BGG apruebe la aplicación.
 
 ### 4. Ranking de mejores juegos (pestaña nueva)
 Una pestaña con los juegos mejor valorados de todos los usuarios, de cada grupo y tuyos.
